@@ -1,23 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+
+var nowQuestion="test text";
+
 
 function App() {
+
+  const handleOnChange=(e)=>{
+    nowQuestion=e.target.value;
+    chgTex(nowQuestion);
+  }
+
+  
+
+  const [inptTex, chgTex] =useState("");
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p className="App-title">FlaskTyping</p>
+        <p>this is header.</p>
       </header>
+      <body className="App-body">
+        <p>this is body</p>
+        <p className="App-question">{nowQuestion}</p>
+        <input className="App-ask"
+        onChange={(e)=>handleOnChange(e)}
+        ></input>
+        <p>{inptTex}</p>
+      </body>
     </div>
   );
 }
