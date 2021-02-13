@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "csv": "^5.3.2",
+    "socket.io": "^3.1.1"
+  }
+}

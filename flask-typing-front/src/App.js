@@ -1,30 +1,140 @@
 import "./App.css";
 import React, { useState } from "react";
+import reactDom from "react-dom";
 
-var nowQuestion = "test text";
+var questions = [];
+
+var nowAnswer = "";
+
+var nowSts = false;
+var nowStsTr = "clear!";
+var nowStsFl = "type!";
+var nowStsPt = nowStsFl;
+
+var questionNo = 0;
+
+var duringGame = false;
+
+function setQuestions() {
+	questions = [
+		"テスト1",
+		"問題2",
+		// "めんどくさい",
+		// "こんなにいる？",
+		// "ガンダム！",
+		// "サザビー",
+		// "Web系エンジニア！",
+	];
+}
+
+function setGame() {
+	questionNo = 0;
+	nowAnswer = "";
+	nowSts = false;
+
+	setQuestions();
+
+	duringGame = true;
+}
+
+setGame();
+
+function endGame() {
+	questionNo = -1;
+	nowAnswer = "";
+	nowSts = true;
+
+	questions = [];
+
+	duringGame = false;
+}
+
+function chkGame() {
+	if (questionNo >= questions.length) {
+		endGame();
+		return false;
+	}
+
+	return true;
+}
+
+function nextQes() {
+	nowSts = false;
+	nowAnswer = "";
+	questionNo++;
+}
+
+function judge() {
+	if (!duringGame) return;
+	if (nowAnswer === questions[questionNo]) {
+		nowSts = true;
+	} else {
+		nowSts = false;
+	}
+	if (nowSts) {
+		nowStsPt = nowStsTr;
+	} else {
+		nowStsPt = nowStsFl;
+	}
+	if (nowSts) {
+		nextQes();
+	}
+	return chkGame();
+}
 
 function App() {
+	const [inptTex, setTex] = useState("");
+	const [appNowSts, setNowSts] = useState(nowStsPt);
+	const [appQues, setQues] = useState(questions[questionNo]);
 	const handleOnChange = (e) => {
-		nowQuestion = e.target.value;
-		chgTex(nowQuestion);
+		nowAnswer = e.target.value;
+		var next = judge();
+		if (!next) {
+			initialize();
+		}
+		e.target.value = nowAnswer;
+
+		update();
 	};
 
-	const [inptTex, chgTex] = useState("");
-	return (
+	const handleBtMore = () => {
+		setGame();
+		document.getElementsByClassName("App-answer")[0].value = "";
+		update();
+	};
+
+	function initialize() {
+		setTex("");
+		setQues("");
+		setNowSts("finish!");
+	}
+
+	// const [app,set]=useState("");
+	function update() {
+		if (duringGame) {
+			setTex(nowAnswer);
+			setQues(questions[questionNo]);
+			setNowSts(nowStsPt);
+		}
+	}
+	const App = (
 		<div className="App">
 			<header className="App-header">
 				<p className="App-title">FlaskTyping</p>
-				<p>this is header.</p>
 			</header>
 			<body className="App-body">
-				<p>this is body</p>
-				<p className="App-question">{nowQuestion}</p>
-				<input className="App-ask" onChange={(e) => handleOnChange(e)}></input>
+				<p className="App-status">{appNowSts}</p>
+				<p className="App-question">{appQues}</p>
+				<input
+					className="App-answer"
+					onChange={(e) => handleOnChange(e)}
+				></input>
 				<p>{inptTex}</p>
+				<button onClick={() => handleBtMore()}>one more</button>
 			</body>
-			a
 		</div>
 	);
+	return App;
 }
 
 export default App;
