@@ -15,15 +15,17 @@ var questionNo = 0;
 
 var duringGame = false;
 
+var servTest = "no get";
+
 function setQuestions() {
 	questions = [
 		"テスト1",
 		"問題2",
-		// "めんどくさい",
-		// "こんなにいる？",
-		// "ガンダム！",
-		// "サザビー",
-		// "Web系エンジニア！",
+		"めんどくさい",
+		"こんなにいる？",
+		"ガンダム！",
+		"サザビー",
+		"Web系エンジニア！",
 	];
 }
 

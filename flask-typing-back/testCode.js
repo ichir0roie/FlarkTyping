@@ -18,22 +18,17 @@ for (var i = 0; i < typingData.length; i++) {
 	console.log(typingData[i]);
 }
 
-const io = require("socket.io")(3001);
+const http = require("http");
 
-io.on("connection", (socket) => {
-	// either with send()
-	socket.send("Hello!");
+const hostname = "localhost";
+const port = 3002;
 
-	// or with emit() and custom event names
-	socket.emit("greetings", "Hey!", { ms: "jane" }, Buffer.from([4, 3, 3, 1]));
+const server = http.createServer((req, res) => {
+	res.statusCode = 200;
+	res.setHeader("Content-Type", "text/plain");
+	res.end("Hello World");
+});
 
-	// handle the event sent with socket.send()
-	socket.on("message", (data) => {
-		console.log(data);
-	});
-
-	// handle the event sent with socket.emit()
-	socket.on("salutations", (elem1, elem2, elem3) => {
-		console.log(elem1, elem2, elem3);
-	});
+server.listen(port, hostname, () => {
+	console.log(`Server running at http://${hostname}:${port}/`);
 });
