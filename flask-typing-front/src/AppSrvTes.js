@@ -8,15 +8,19 @@ function App() {
 	const [testText, setTesTex] = useState("");
 
 	const handleOnClick = () => {
-		fetch(ENDPOINT)
-			.then(function (response) {
-				response.text().then(function (text) {
-					setTesTex(text);
-				});
-			})
-			.catch((e) => {
-				console.log(e);
-			});
+		const request = require('request');
+
+		request(ENDPOINT, (error, response, body) => {
+		  // エラーチェック
+		  if( error !== null ){
+			console.error('error:', error);
+			return(false);
+		  }
+		
+		  // レスポンスコードとHTMLを表示
+		  console.log('statusCode:', response && response.statusCode);
+		  console.log('body:', body);
+		});
 	};
 
 	const App = (

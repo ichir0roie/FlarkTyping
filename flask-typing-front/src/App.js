@@ -19,14 +19,24 @@ var servTest = "no get";
 
 function setQuestions() {
 	questions = [
-		"テスト1",
-		"問題2",
-		"めんどくさい",
-		"こんなにいる？",
-		"ガンダム！",
-		"サザビー",
-		"Web系エンジニア！",
+		"クライアントデータ1",
 	];
+	const request = require('request');
+
+		request(ENDPOINT, (error, response, body) => {
+		  // エラーチェック
+		  if( error !== null ){
+			console.error('error:', error);
+			return(false);
+		  }
+		
+		  // レスポンスコードとHTMLを表示
+		  console.log('statusCode:', response && response.statusCode);
+		  console.log('body:', body);
+
+		  questions=JSON.parse(request)
+
+		});
 }
 
 function setGame() {

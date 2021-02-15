@@ -25,8 +25,26 @@ const port = 3002;
 
 const server = http.createServer((req, res) => {
 	res.statusCode = 200;
-	res.setHeader("Content-Type", "text/plain");
-	res.end("Hello World");
+
+	const headers = {
+		"Access-Control-Allow-Origin": "*",
+		"Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+		"Access-Control-Max-Age": 2592000, // 30 days
+		/** add other headers as per requirement */
+	  };
+
+	res.writeHead(200,headers);
+
+	questions=JSON.stringify(
+		{
+			questions:typingData
+		}
+	);
+
+	res.write(questions);
+
+	res.end();
+
 });
 
 server.listen(port, hostname, () => {
