@@ -17,34 +17,22 @@ var duringGame = false;
 
 var servTest = "no get";
 
-function setQuestions() {
+const ENDPOINT = "http://localhost:3002";
+
+function setQuestions(Qid) {
 	questions = [
-		"クライアントデータ1",
+		"クライアントデータ",
+		"クライアント側でベタ打ちした",
+		"配列が問題に設定されている",
 	];
-	const request = require('request');
-
-		request(ENDPOINT, (error, response, body) => {
-		  // エラーチェック
-		  if( error !== null ){
-			console.error('error:', error);
-			return(false);
-		  }
-		
-		  // レスポンスコードとHTMLを表示
-		  console.log('statusCode:', response && response.statusCode);
-		  console.log('body:', body);
-
-		  questions=JSON.parse(request)
-
-		});
 }
+
+setQuestions();
 
 function setGame() {
 	questionNo = 0;
 	nowAnswer = "";
 	nowSts = false;
-
-	setQuestions();
 
 	duringGame = true;
 }
@@ -115,6 +103,27 @@ function App() {
 		update();
 	};
 
+	const handleBtChange = () => {
+		const request = require("request");
+		request(ENDPOINT, (error, response, body) => {
+			// エラーチェック
+			if (error !== null) {
+				console.error("error:", error);
+				return false;
+			}
+
+			// レスポンスコードとHTMLを表示
+			console.log("statusCode:", response && response.statusCode);
+			console.log("body:", body);
+
+			var getQuestions = JSON.parse(body);
+			console.log(getQuestions);
+			questions = getQuestions["questions"];
+
+			handleBtMore();
+		});
+	};
+
 	function initialize() {
 		setTex("");
 		setQues("");
@@ -143,6 +152,10 @@ function App() {
 				></input>
 				<p>{inptTex}</p>
 				<button onClick={() => handleBtMore()}>one more</button>
+
+				<div>
+					<button onClick={(e) => handleBtChange(e)}>change questions</button>
+				</div>
 			</body>
 		</div>
 	);
