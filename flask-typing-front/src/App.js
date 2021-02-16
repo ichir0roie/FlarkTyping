@@ -29,6 +29,9 @@ function setQuestions(Qid) {
 	];
 }
 
+//hack:settest values
+let menuQIds = ["data1", "data2", "data3"];
+
 setQuestions();
 
 function setGame() {
@@ -131,6 +134,29 @@ function App() {
 			setNowSts(nowStsPt);
 		}
 	}
+
+	const MenuBts = [];
+	function createMenuBts(Qids) {
+		for (let i = 0; i < Qids.length; i++) {
+			MenuBts.push(
+				<div className="Menu-item">
+					<button
+						className="Menu-item-bt"
+						id={Qids[i]}
+						onClick={(e) => handleMenuClick(e)}
+					>
+						{Qids[i]}
+					</button>
+				</div>
+			);
+		}
+	}
+	createMenuBts(menuQIds);
+
+	const handleMenuClick = (e) => {
+		console.log(e.target.id);
+	};
+
 	const App = (
 		<div className="App">
 			<header className="App-header">
@@ -146,19 +172,11 @@ function App() {
 					></input>
 					<p>{inptTex}</p>
 					<button onClick={() => handleBtMore()}>one more</button>
-
 					<div>
 						<button onClick={(e) => handleBtChange(e)}>change questions</button>
 					</div>
 				</div>
-				<div className="Menu-bar">
-					<div className="Menu-item">
-						<button className="Menu-item-bt">test1</button>
-					</div>
-					<div className="Menu-item">
-						<button className="Menu-item-bt">test1</button>
-					</div>
-				</div>
+				<div className="Menu-bar">{MenuBts}</div>
 			</body>
 		</div>
 	);
