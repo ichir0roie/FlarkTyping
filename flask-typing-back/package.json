@@ -1,9 +1,4 @@
 {
-  "dependencies": {
-    "csv": "^5.3.2",
-    "express": "^4.17.1",
-    "socket.io": "^3.1.1"
-  },
   "name": "flask-typing-back",
   "version": "1.0.0",
   "main": "main.js",
@@ -13,6 +8,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "csv": "^5.3.2",
+    "csv-parse": "^4.15.1"
+  }
 }
