@@ -2,6 +2,8 @@ import "./App.css";
 import React, { useState } from "react";
 import reactDom from "react-dom";
 
+const request = require("request");
+
 var questions = [];
 
 var nowAnswer = "";
@@ -104,24 +106,15 @@ function App() {
 	};
 
 	const handleBtChange = () => {
-		const request = require("request");
-		request(ENDPOINT, (error, response, body) => {
-			// エラーチェック
-			if (error !== null) {
-				console.error("error:", error);
-				return false;
-			}
+		fetch(ENDPOINT)
+			.then((Response) => Response.json())
+			.then((data) => {
+				var getQuestions = data;
+				console.log(getQuestions);
+				questions = getQuestions["questions"];
 
-			// レスポンスコードとHTMLを表示
-			console.log("statusCode:", response && response.statusCode);
-			console.log("body:", body);
-
-			var getQuestions = JSON.parse(body);
-			console.log(getQuestions);
-			questions = getQuestions["questions"];
-
-			handleBtMore();
-		});
+				handleBtMore();
+			});
 	};
 
 	function initialize() {
@@ -144,17 +137,27 @@ function App() {
 				<p className="App-title">FlaskTyping</p>
 			</header>
 			<body className="App-body">
-				<p className="App-status">{appNowSts}</p>
-				<p className="App-question">{appQues}</p>
-				<input
-					className="App-answer"
-					onChange={(e) => handleOnChange(e)}
-				></input>
-				<p>{inptTex}</p>
-				<button onClick={() => handleBtMore()}>one more</button>
+				<div className="Type-game">
+					<p className="App-status">{appNowSts}</p>
+					<p className="App-question">{appQues}</p>
+					<input
+						className="App-answer"
+						onChange={(e) => handleOnChange(e)}
+					></input>
+					<p>{inptTex}</p>
+					<button onClick={() => handleBtMore()}>one more</button>
 
-				<div>
-					<button onClick={(e) => handleBtChange(e)}>change questions</button>
+					<div>
+						<button onClick={(e) => handleBtChange(e)}>change questions</button>
+					</div>
+				</div>
+				<div className="Menu-bar">
+					<div className="Menu-item">
+						<button className="Menu-item-bt">test1</button>
+					</div>
+					<div className="Menu-item">
+						<button className="Menu-item-bt">test1</button>
+					</div>
 				</div>
 			</body>
 		</div>
