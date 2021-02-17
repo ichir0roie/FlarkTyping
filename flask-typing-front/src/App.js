@@ -1,10 +1,12 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import reactDom from "react-dom";
 
 const request = require("request");
 
+var questionNo = 0;
 var questions = [];
+let questionId = "data1";
 
 var nowAnswer = "";
 
@@ -13,27 +15,12 @@ var nowStsTr = "clear!";
 var nowStsFl = "type!";
 var nowStsPt = nowStsFl;
 
-var questionNo = 0;
-
 var duringGame = false;
 
-var servTest = "no get";
-
-const ENDPOINT = "http://localhost:3002";
-const frontTypingData="http://localhost:3000/TypingData/";
-
-function setQuestions(Qid) {
-	questions = [
-		"クライアントデータ",
-		"クライアント側でベタ打ちした",
-		"配列が問題に設定されている",
-	];
-}
+const frontTypingData = "http://ichir0roie.com/frontOnly/TypingData/";
 
 //hack:settest values
 let menuQIds = ["data1", "data2", "data3"];
-
-setQuestions();
 
 function setGame() {
 	questionNo = 0;
@@ -92,6 +79,11 @@ function App() {
 	const [inptTex, setTex] = useState("");
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
+
+	useEffect(() => {
+		setQuestions();
+	}, []);
+
 	const handleOnChange = (e) => {
 		nowAnswer = e.target.value;
 		var next = judge();
@@ -105,11 +97,10 @@ function App() {
 
 	const handleBtMore = () => {
 		setGame();
+		setQuestions();
 		document.getElementsByClassName("App-answer")[0].value = "";
 		update();
 	};
-
-
 
 	function initialize() {
 		setTex("");
@@ -126,36 +117,40 @@ function App() {
 		}
 	}
 
-	const MenuBts = [];
-	function createMenuBts(Qids) {
-		for (let i = 0; i < Qids.length; i++) {
-			MenuBts.push(
+	const [MenuBts, setMenuBts] = useState(() => {
+		let tmpAry = [];
+		for (let i = 0; i < menuQIds.length; i++) {
+			tmpAry.push(
 				<div className="Menu-item">
 					<button
 						className="Menu-item-bt"
-						id={Qids[i]}
+						id={menuQIds[i]}
 						onClick={(e) => handleMenuClick(e)}
 					>
-						{Qids[i]}
+						{menuQIds[i]}
 					</button>
 				</div>
 			);
 		}
-	}
-	createMenuBts(menuQIds);
+		return tmpAry;
+	});
 
-	const handleMenuClick = (e) => {
-		console.log(e.target.id);
-		let Qid=e.target.id;
-		fetch(frontTypingData+Qid+".csv")
+	function setQuestions() {
+		fetch(frontTypingData + questionId + ".csv")
 			.then((Response) => Response.text())
-			.then(text => {
-				let getQuestions = text.split('\r\n');
+			.then((text) => {
+				let getQuestions = text.split("\r\n");
 				console.log(getQuestions);
 				questions = getQuestions;
-
-				handleBtMore();
+				update();
 			});
+	}
+
+	const handleMenuClick = (e) => {
+		handleBtMore();
+		console.log(e.target.id);
+		questionId = e.target.id;
+		setQuestions();
 	};
 
 	const App = (
@@ -165,6 +160,7 @@ function App() {
 			</header>
 			<body className="App-body">
 				<div className="Type-game">
+					<p>now:{questionId}</p>
 					<p className="App-status">{appNowSts}</p>
 					<p className="App-question">{appQues}</p>
 					<input
@@ -173,7 +169,17 @@ function App() {
 					></input>
 					<p>{inptTex}</p>
 					<button onClick={() => handleBtMore()}>one more</button>
-					<p>※このバージョンはフロントエンドオンリーで作成</p>
+					<p className="fadeout">
+						※このバージョンはフロントエンドオンリーで作成
+					</p>
+					<a
+						className="fadeout"
+						href="https://github.com/ichir0roie/FlarkTyping/tree/front-only-ver"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						gitHubリポジトリのリンク
+					</a>
 				</div>
 				<div className="Menu-bar">{MenuBts}</div>
 			</body>
