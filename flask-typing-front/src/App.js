@@ -20,6 +20,7 @@ var duringGame = false;
 var servTest = "no get";
 
 const ENDPOINT = "http://localhost:3002";
+const frontTypingData="http://localhost:3000/TypingData/";
 
 function setQuestions(Qid) {
 	questions = [
@@ -108,17 +109,7 @@ function App() {
 		update();
 	};
 
-	const handleBtChange = () => {
-		fetch(ENDPOINT)
-			.then((Response) => Response.json())
-			.then((data) => {
-				var getQuestions = data;
-				console.log(getQuestions);
-				questions = getQuestions["questions"];
 
-				handleBtMore();
-			});
-	};
 
 	function initialize() {
 		setTex("");
@@ -155,6 +146,16 @@ function App() {
 
 	const handleMenuClick = (e) => {
 		console.log(e.target.id);
+		let Qid=e.target.id;
+		fetch(frontTypingData+Qid+".csv")
+			.then((Response) => Response.text())
+			.then(text => {
+				let getQuestions = text.split('\r\n');
+				console.log(getQuestions);
+				questions = getQuestions;
+
+				handleBtMore();
+			});
 	};
 
 	const App = (
@@ -172,9 +173,7 @@ function App() {
 					></input>
 					<p>{inptTex}</p>
 					<button onClick={() => handleBtMore()}>one more</button>
-					<div>
-						<button onClick={(e) => handleBtChange(e)}>change questions</button>
-					</div>
+					<p>※このバージョンはフロントエンドオンリーで作成</p>
 				</div>
 				<div className="Menu-bar">{MenuBts}</div>
 			</body>
