@@ -109,6 +109,8 @@ function App() {
 	};
 
 	const handleBtChange = () => {
+
+		let Qid
 		fetch(ENDPOINT,{
 			method:"GET",
 			headers: new Headers(),
