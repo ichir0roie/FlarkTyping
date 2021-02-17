@@ -2,8 +2,12 @@ const gtd = require("./getTypingData.js");
 
 const http = require("http");
 
+const url = require('url');
+
 const hostname = "localhost";
 const port = 3002;
+
+const qidFirst="data1";
 
 const server = http.createServer((req, res) => {
 	res.statusCode = 200;
@@ -15,15 +19,25 @@ const server = http.createServer((req, res) => {
 		/** add other headers as per requirement */
 	};
 
-	res.writeHead(200, headers);
+	if(req.method==="GET"){
+		res.writeHead(200, headers);
 
-	let typingData = gtd.getTypingData("data2");
+		var myUrl = new URL(`http://${hostname}:${port}`+req.url);
+		var qid = myUrl.searchParams.get('qid')
 
-	questions = JSON.stringify({
-		questions: typingData,
-	});
+		if(qid==null){
+			qid=qidFirst;
+		}
 
-	res.write(questions);
+		let typingData = gtd.getTypingData(qid);
+	
+		questions = JSON.stringify({
+			questions: typingData,
+		});
+	
+		res.write(questions);
+	
+	}
 
 	res.end();
 });

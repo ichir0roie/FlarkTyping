@@ -19,7 +19,7 @@ var duringGame = false;
 
 var servTest = "no get";
 
-const ENDPOINT = "http://localhost:3002";
+const ENDPOINT = "http://localhost:3002/";
 
 function setQuestions(Qid) {
 	questions = [
@@ -109,7 +109,12 @@ function App() {
 	};
 
 	const handleBtChange = () => {
-		fetch(ENDPOINT)
+		fetch(ENDPOINT,{
+			method:"GET",
+			headers: new Headers(),
+ 			 mode: 'cors',
+  			cache: 'default',
+		})
 			.then((Response) => Response.json())
 			.then((data) => {
 				var getQuestions = data;
