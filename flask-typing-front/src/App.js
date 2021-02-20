@@ -21,18 +21,17 @@ var servTest = "no get";
 
 const ENDPOINT = "http://localhost:3002/";
 
-function setQuestions(Qid) {
+function setTestQuestions() {
 	questions = [
-		"クライアントデータ",
-		"クライアント側でベタ打ちした",
-		"配列が問題に設定されている",
+		"front",
+		"testData",
 	];
 }
 
 //hack:settest values
 let menuQIds = ["data1", "data2", "data3"];
 
-setQuestions();
+setTestQuestions();
 
 function setGame() {
 	questionNo = 0;
@@ -110,12 +109,12 @@ function App() {
 
 	const handleBtChange = () => {
 
-		let Qid
-		fetch(ENDPOINT,{
-			method:"GET",
+		let Qid = "";
+		fetch(ENDPOINT, {
+			method: "GET",
 			headers: new Headers(),
- 			 mode: 'cors',
-  			cache: 'default',
+			mode: 'cors',
+			cache: 'default',
 		})
 			.then((Response) => Response.json())
 			.then((data) => {
@@ -124,6 +123,8 @@ function App() {
 				questions = getQuestions["questions"];
 
 				handleBtMore();
+			}).catch(function () {
+				setTestQuestions();
 			});
 	};
 
@@ -164,30 +165,47 @@ function App() {
 		console.log(e.target.id);
 	};
 
+	const AppBody = (
+		<body className="App-body">
+			<div className="Type-game">
+				<p className="App-status">{appNowSts}</p>
+				<p className="App-question">{appQues}</p>
+				<input
+					className="App-answer"
+					onChange={(e) => handleOnChange(e)}
+				></input>
+				<p>{inptTex}</p>
+				<button onClick={() => handleBtMore()}>one more</button>
+				<div>
+					<button onClick={(e) => handleBtChange(e)}>change questions</button>
+				</div>
+			</div>
+			<div className="Menu-bar">{MenuBts}</div>
+		</body>
+	);
+
+	const Login = (
+		<div className="Login">
+			<p className="login-tx-username">userName</p>
+			<input className="login-in-username"></input>
+			<p className="login-tx-password">password</p>
+			<input className="login-in-pwssword"></input>
+			<button className="login-bt-login">login</button>
+			<button className="login-bt-signup">signup</button>
+		</div>
+	);
+
 	const App = (
 		<div className="App">
 			<header className="App-header">
 				<p className="App-title">FlaskTyping</p>
 			</header>
-			<body className="App-body">
-				<div className="Type-game">
-					<p className="App-status">{appNowSts}</p>
-					<p className="App-question">{appQues}</p>
-					<input
-						className="App-answer"
-						onChange={(e) => handleOnChange(e)}
-					></input>
-					<p>{inptTex}</p>
-					<button onClick={() => handleBtMore()}>one more</button>
-					<div>
-						<button onClick={(e) => handleBtChange(e)}>change questions</button>
-					</div>
-				</div>
-				<div className="Menu-bar">{MenuBts}</div>
-			</body>
+			<Login />
 		</div>
 	);
+
 	return App;
 }
 
 export default App;
+
