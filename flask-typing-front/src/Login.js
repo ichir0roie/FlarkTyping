@@ -5,8 +5,8 @@ import App from "./App";
 
 const axios = require("axios").default;
 
-const apiKey = "AIzaSyDqBK2vj-rQAUVcO1dch84Lyc4JKmSJCHs";
-
+const Data = require("./Data");
+const apiKey = Data.apiKey;
 const signupUrl =
 	"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + apiKey;
 const signinUrl =
