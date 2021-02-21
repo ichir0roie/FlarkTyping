@@ -1,9 +1,5 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import Login from "./Login";
-import reactDom from "react-dom";
-
-const request = require("request");
 
 var questions = [];
 
@@ -17,8 +13,6 @@ var nowStsPt = nowStsFl;
 var questionNo = 0;
 
 var duringGame = false;
-
-var servTest = "no get";
 
 const ENDPOINT = "http://localhost:3002/";
 
@@ -84,9 +78,6 @@ function judge() {
 	return chkGame();
 }
 
-let loadUsername = "test";
-let loadPassword = "pass";
-
 function App() {
 	const [inptTex, setTex] = useState("");
 	const [appNowSts, setNowSts] = useState(nowStsPt);
@@ -109,7 +100,6 @@ function App() {
 	};
 
 	const handleBtChange = () => {
-		let Qid = "";
 		fetch(ENDPOINT, {
 			method: "GET",
 			headers: new Headers(),
@@ -144,20 +134,11 @@ function App() {
 		}
 	}
 
-	const MenuBts = [];
-
-	const handleLogout = () => {
+	function handleMenuClick(e) {
 		localStorage.removeItem("token");
-		return App;
-	};
-	MenuBts.push(
-		<div className="Menu-item">
-			<button className="Menu-item-bt" onClick={() => handleLogout()}>
-				LOGOUT
-			</button>
-		</div>
-	);
+	}
 
+	const MenuBts = [];
 	function createMenuBts(Qids) {
 		for (let i = 0; i < Qids.length; i++) {
 			MenuBts.push(
@@ -175,11 +156,7 @@ function App() {
 	}
 	createMenuBts(menuQIds);
 
-	const handleMenuClick = (e) => {
-		console.log(e.target.id);
-	};
-
-	const AppBody = (
+	const App = (
 		<body className="App-body">
 			<div className="Type-game">
 				<p className="App-status">{appNowSts}</p>
@@ -196,28 +173,6 @@ function App() {
 			</div>
 			<div className="Menu-bar">{MenuBts}</div>
 		</body>
-	);
-
-	const LoginCp = <Login />;
-
-	const getMode = () => {
-		if (localStorage.getItem("token")) {
-			// ログインしている場合に任意のメソッドを実行
-			console.log("signined");
-			return AppBody;
-		} else {
-			console.log("not signined");
-			return LoginCp;
-		}
-	};
-
-	const App = (
-		<div className="App">
-			<header className="App-header">
-				<p className="App-title">FlaskTyping</p>
-			</header>
-			{getMode()}
-		</div>
 	);
 
 	return App;
