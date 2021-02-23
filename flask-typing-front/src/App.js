@@ -15,19 +15,6 @@ if (localStorage.getItem("token")) {
 function App() {
 	const [isLogined, setLogin] = useState(signIn);
 
-	const checkLogdIn = () => {
-		if (localStorage.getItem("token")) {
-			// ログインしている場合に任意のメソッドを実行
-			console.log("signined");
-			setLogin(true);
-		} else {
-			console.log("not signined");
-			setLogin(false);
-		}
-	};
-
-	//setInterval(checkLogdIn, 1000);
-
 	const AppLogin = (
 		<div className="App">
 			<header className="App-header">
