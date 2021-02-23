@@ -1,5 +1,9 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
+import Login from "./Login";
+import reactDom from "react-dom";
+
+const request = require("request");
 
 var questions = [];
 
@@ -13,6 +17,8 @@ var nowStsPt = nowStsFl;
 var questionNo = 0;
 
 var duringGame = false;
+
+var servTest = "no get";
 
 const ENDPOINT = "http://localhost:3002/";
 
@@ -100,6 +106,7 @@ function App() {
 	};
 
 	const handleBtChange = () => {
+		let Qid = "";
 		fetch(ENDPOINT, {
 			method: "GET",
 			headers: new Headers(),
@@ -134,11 +141,20 @@ function App() {
 		}
 	}
 
-	function handleMenuClick(e) {
-		localStorage.removeItem("token");
-	}
-
 	const MenuBts = [];
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		return App;
+	};
+	MenuBts.push(
+		<div className="Menu-item">
+			<button className="Menu-item-bt" onClick={() => handleLogout()}>
+				LOGOUT
+			</button>
+		</div>
+	);
+
 	function createMenuBts(Qids) {
 		for (let i = 0; i < Qids.length; i++) {
 			MenuBts.push(
@@ -156,8 +172,12 @@ function App() {
 	}
 	createMenuBts(menuQIds);
 
+	const handleMenuClick = (e) => {
+		console.log(e.target.id);
+	};
+
 	const App = (
-		<body className="App-body">
+		<div className="App-body">
 			<div className="Type-game">
 				<p className="App-status">{appNowSts}</p>
 				<p className="App-question">{appQues}</p>
@@ -172,7 +192,7 @@ function App() {
 				</div>
 			</div>
 			<div className="Menu-bar">{MenuBts}</div>
-		</body>
+		</div>
 	);
 
 	return App;

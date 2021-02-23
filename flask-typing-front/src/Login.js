@@ -55,37 +55,35 @@ function Login() {
 	};
 
 	const Login = (
-		<body>
-			<div className="Login">
-				<form method="post" onSubmit={handleLogin}>
-					<p className="login-tx-username">userName</p>
-					<input
-						className="login-in-username"
-						type="text"
-						name="email"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-					></input>
-					<p className="login-tx-password">password</p>
-					<input
-						className="login-in-password"
-						value={password}
-						type="password"
-						name="password"
-						onChange={(e) => setPassword(e.target.value)}
-					></input>
-					<div>
-						<button className="login-bt-in">signIn</button>
-					</div>
-				</form>
+		<div className="Login">
+			<form method="post" onSubmit={handleLogin}>
+				<p className="login-tx-username">userName</p>
+				<input
+					className="login-in-username"
+					type="text"
+					name="email"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				></input>
+				<p className="login-tx-password">password</p>
+				<input
+					className="login-in-password"
+					value={password}
+					type="password"
+					name="password"
+					onChange={(e) => setPassword(e.target.value)}
+				></input>
 				<div>
-					<button className="login-bt-up">signUp</button>
+					<button className="login-bt-in">signIn</button>
 				</div>
-				<div>
-					<p>{postError}</p>
-				</div>
+			</form>
+			<div>
+				<button className="login-bt-up">signUp</button>
 			</div>
-		</body>
+			<div>
+				<p>{postError}</p>
+			</div>
+		</div>
 	);
 	return Login;
 }
