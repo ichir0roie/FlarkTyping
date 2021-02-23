@@ -84,10 +84,11 @@ function judge() {
 	return chkGame();
 }
 
-function App() {
+function App(props) {
 	const [inptTex, setTex] = useState("");
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
+
 	const handleOnChange = (e) => {
 		nowAnswer = e.target.value;
 		var next = judge();
@@ -106,7 +107,6 @@ function App() {
 	};
 
 	const handleBtChange = () => {
-		let Qid = "";
 		fetch(ENDPOINT, {
 			method: "GET",
 			headers: new Headers(),
@@ -145,7 +145,7 @@ function App() {
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
-		return App;
+		props.setLogin(false);
 	};
 	MenuBts.push(
 		<div className="Menu-item">

@@ -15,7 +15,7 @@ const signinUrl =
 
 let url = signinUrl;
 
-function Login() {
+function Login(props) {
 	const auth = () => {
 		// 認証データ
 		const authDate = {
@@ -29,6 +29,8 @@ function Login() {
 				// 返ってきたトークンをローカルストレージに格納する
 				localStorage.setItem("token", response.data.idToken);
 				setPosErr("signIn!!");
+
+				props.setLogin(true);
 			})
 			.catch((error) => {
 				// Firebase側で用意されているエラーメッセージが格納される
@@ -45,13 +47,6 @@ function Login() {
 	const handleLogin = (e) => {
 		auth();
 		e.preventDefault();
-		ReactDOM.render(
-			<React.StrictMode>
-				<App />
-				{/* <AppSrvTes /> */}
-			</React.StrictMode>,
-			document.getElementById("root")
-		);
 	};
 
 	const Login = (
