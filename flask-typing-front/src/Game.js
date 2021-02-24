@@ -5,6 +5,8 @@ import reactDom from "react-dom";
 
 const request = require("request");
 
+const Data = require("./Data");
+
 var questions = [];
 
 var nowAnswer = "";
@@ -18,9 +20,7 @@ var questionNo = 0;
 
 var duringGame = false;
 
-var servTest = "no get";
-
-const ENDPOINT = "http://localhost:3002/";
+const ENDPOINT = Data.dataApi;
 
 function setTestQuestions() {
 	questions = ["front", "testData"];
@@ -45,8 +45,6 @@ function endGame() {
 	questionNo = -1;
 	nowAnswer = "";
 	nowSts = true;
-
-	questions = [];
 
 	duringGame = false;
 }
@@ -106,26 +104,6 @@ function App(props) {
 		update();
 	};
 
-	const handleBtChange = () => {
-		fetch(ENDPOINT, {
-			method: "GET",
-			headers: new Headers(),
-			mode: "cors",
-			cache: "default",
-		})
-			.then((Response) => Response.json())
-			.then((data) => {
-				var getQuestions = data;
-				console.log(getQuestions);
-				questions = getQuestions["questions"];
-
-				handleBtMore();
-			})
-			.catch(function () {
-				setTestQuestions();
-			});
-	};
-
 	function initialize() {
 		setTex("");
 		setQues("");
@@ -170,10 +148,31 @@ function App(props) {
 			);
 		}
 	}
+
 	createMenuBts(menuQIds);
 
 	const handleMenuClick = (e) => {
 		console.log(e.target.id);
+		let url = new URL(ENDPOINT);
+		let params = { qid: e.target.id };
+		url.search = new URLSearchParams(params).toString();
+		fetch(url, {
+			method: "GET",
+			headers: new Headers(),
+			mode: "cors",
+			cache: "default",
+		})
+			.then((Response) => Response.json())
+			.then((data) => {
+				var getQuestions = data;
+				console.log(getQuestions);
+				questions = getQuestions["questions"];
+
+				handleBtMore();
+			})
+			.catch(function () {
+				setTestQuestions();
+			});
 	};
 
 	const App = (
@@ -187,9 +186,6 @@ function App(props) {
 				></input>
 				<p>{inptTex}</p>
 				<button onClick={() => handleBtMore()}>one more</button>
-				<div>
-					<button onClick={(e) => handleBtChange(e)}>change questions</button>
-				</div>
 			</div>
 			<div className="Menu-bar">{MenuBts}</div>
 		</div>

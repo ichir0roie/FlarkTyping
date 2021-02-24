@@ -24,6 +24,8 @@
 + params
   + loginInfo
   + quesId
++ method
+  + update
 
 ### ヘッダー
 
