@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "csv": "^5.3.2",
-    "csv-parse": "^4.15.1"
+    "csv-parse": "^4.15.1",
+    "findit": "^2.0.0"
   }
 }
