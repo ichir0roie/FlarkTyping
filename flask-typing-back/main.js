@@ -1,13 +1,14 @@
 const gtd = require("./getTypingData.js");
 const gtm = require("./getMenu.js");
+
 const hostData = require("./hostData.js");
 
 const http = require("http");
 
 const url = require("url");
 
-const hostname=hostData.hostname;
-const port=hostData.port;
+const hostname = hostData.hostname;
+const port = hostData.port;
 
 const qidFirst = "data1";
 
