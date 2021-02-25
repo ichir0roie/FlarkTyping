@@ -26,9 +26,6 @@ function setTestQuestions() {
 	questions = ["front", "testData"];
 }
 
-//hack:settest values
-let menuQIds = ["data1", "data2", "data3"];
-
 setTestQuestions();
 
 function setGame() {
@@ -87,6 +84,8 @@ function App(props) {
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
 
+	const [menuBts, setMenuBts] = useState(createMenuBts());
+
 	const handleOnChange = (e) => {
 		nowAnswer = e.target.value;
 		var next = judge();
@@ -119,37 +118,49 @@ function App(props) {
 		}
 	}
 
-	const MenuBts = [];
-
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		props.setLogin(false);
 	};
-	MenuBts.push(
-		<div className="Menu-item">
-			<button className="Menu-item-bt" onClick={() => handleLogout()}>
-				LOGOUT
-			</button>
-		</div>
-	);
 
-	function createMenuBts(Qids) {
-		for (let i = 0; i < Qids.length; i++) {
-			MenuBts.push(
-				<div className="Menu-item">
-					<button
-						className="Menu-item-bt"
-						id={Qids[i]}
-						onClick={(e) => handleMenuClick(e)}
-					>
-						{Qids[i]}
-					</button>
-				</div>
-			);
-		}
+	function createMenuBts() {
+		let url = new URL(ENDPOINT);
+		let params = { menu: "all" };
+		url.search = new URLSearchParams(params).toString();
+		fetch(url, {
+			method: "GET",
+			headers: new Headers(),
+			mode: "cors",
+			cache: "default",
+		})
+			.then((Response) => Response.json())
+			.then((data) => {
+				let menuBts = [];
+
+				menuBts.push(
+					<div className="Menu-item">
+						<button className="Menu-item-bt" onClick={() => handleLogout()}>
+							LOGOUT
+						</button>
+					</div>
+				);
+				const menu = data["menu"];
+				for (let i = 0; i < menu.length; i++) {
+					menuBts.push(
+						<div className="Menu-item">
+							<button
+								className="Menu-item-bt"
+								id={menu[i]}
+								onClick={(e) => handleMenuClick(e)}
+							>
+								{menu[i]}
+							</button>
+						</div>
+					);
+				}
+				setMenuBts(menuBts);
+			});
 	}
-
-	createMenuBts(menuQIds);
 
 	const handleMenuClick = (e) => {
 		console.log(e.target.id);
@@ -187,7 +198,7 @@ function App(props) {
 				<p>{inptTex}</p>
 				<button onClick={() => handleBtMore()}>one more</button>
 			</div>
-			<div className="Menu-bar">{MenuBts}</div>
+			<div className="Menu-bar">{menuBts}</div>
 		</div>
 	);
 
