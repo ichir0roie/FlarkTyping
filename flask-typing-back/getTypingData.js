@@ -7,11 +7,17 @@ exports.getTypingData = function (qId) {
 
 	let typingData = [];
 
-	let tmpDt = fs.readFileSync(__dirname + tdp);
-	let res = csv(tmpDt);
+	try {
 
-	for (var i = 0; i < res.length; i++) {
-		typingData[i] = res[i][0];
+		let tmpDt = fs.readFileSync(__dirname + tdp);
+
+		let res = csv(tmpDt);
+
+		for (var i = 0; i < res.length; i++) {
+			typingData[i] = res[i][0];
+		}
+	} catch (error) {
+		console.log(error);
 	}
 	return typingData;
 };
