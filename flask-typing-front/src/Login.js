@@ -13,8 +13,6 @@ const signinUrl =
 	"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
 	apiKey;
 
-let url = signinUrl;
-
 function Login(props) {
 	const auth = () => {
 		// 認証データ
@@ -24,11 +22,33 @@ function Login(props) {
 			returnSecureToken: true,
 		};
 		axios
-			.post(url, authDate)
+			.post(signinUrl, authDate)
 			.then((response) => {
 				// 返ってきたトークンをローカルストレージに格納する
 				localStorage.setItem("token", response.data.idToken);
 				setPosErr("signIn!!");
+
+				props.setLogin(true);
+			})
+			.catch((error) => {
+				// Firebase側で用意されているエラーメッセージが格納される
+				setPosErr(error.response.data.error.message);
+				localStorage.removeItem("token");
+			});
+	};
+
+	const signup = () => {
+		const authDate = {
+			email: username,
+			password: password,
+			returnSecureToken: true,
+		};
+		axios
+			.post(signupUrl, authDate)
+			.then((response) => {
+				// 返ってきたトークンをローカルストレージに格納する
+				localStorage.setItem("token", response.data.idToken);
+				setPosErr("signUp!!");
 
 				props.setLogin(true);
 			})
@@ -46,6 +66,10 @@ function Login(props) {
 
 	const handleLogin = (e) => {
 		auth();
+		e.preventDefault();
+	};
+	const handleSignUp = (e) => {
+		signup();
 		e.preventDefault();
 	};
 
@@ -73,7 +97,9 @@ function Login(props) {
 				</div>
 			</form>
 			<div>
-				<button className="login-bt-up">signUp</button>
+				<button className="login-bt-up" onClick={handleSignUp}>
+					signUp
+				</button>
 			</div>
 			<div>
 				<p>{postError}</p>

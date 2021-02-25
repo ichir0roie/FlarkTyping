@@ -84,7 +84,7 @@ function App(props) {
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
 
-	const [menuBts, setMenuBts] = useState(createMenuBts());
+	const [menuBts, setMenuBts] = useState([]);
 
 	const handleOnChange = (e) => {
 		nowAnswer = e.target.value;
@@ -135,9 +135,9 @@ function App(props) {
 		})
 			.then((Response) => Response.json())
 			.then((data) => {
-				let menuBts = [];
+				let menuBtBuf = [];
 
-				menuBts.push(
+				menuBtBuf.push(
 					<div className="Menu-item">
 						<button className="Menu-item-bt" onClick={() => handleLogout()}>
 							LOGOUT
@@ -146,7 +146,7 @@ function App(props) {
 				);
 				const menu = data["menu"];
 				for (let i = 0; i < menu.length; i++) {
-					menuBts.push(
+					menuBtBuf.push(
 						<div className="Menu-item">
 							<button
 								className="Menu-item-bt"
@@ -158,9 +158,10 @@ function App(props) {
 						</div>
 					);
 				}
-				setMenuBts(menuBts);
+				setMenuBts(menuBtBuf);
 			});
 	}
+	useEffect(() => createMenuBts(), []);
 
 	const handleMenuClick = (e) => {
 		console.log(e.target.id);
