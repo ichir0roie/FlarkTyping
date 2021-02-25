@@ -1,7 +1,2 @@
-
-
-
-
-
-export const hostname = "";
-export const port = 0;
+export const hostname = "localhost";
+export const port = 3000;
