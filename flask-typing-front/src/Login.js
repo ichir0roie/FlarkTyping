@@ -17,7 +17,7 @@ function Login(props) {
 	const auth = () => {
 		// 認証データ
 		const authDate = {
-			email: username,
+			email: email,
 			password: password,
 			returnSecureToken: true,
 		};
@@ -39,7 +39,7 @@ function Login(props) {
 
 	const signup = () => {
 		const authDate = {
-			email: username,
+			email: email,
 			password: password,
 			returnSecureToken: true,
 		};
@@ -59,7 +59,7 @@ function Login(props) {
 			});
 	};
 
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const [postError, setPosErr] = useState("");
@@ -76,13 +76,13 @@ function Login(props) {
 	const Login = (
 		<div className="Login">
 			<form method="post" onSubmit={handleLogin}>
-				<p className="login-tx-username">userName</p>
+				<p className="login-tx-email">email</p>
 				<input
-					className="login-in-username"
+					className="login-in-email"
 					type="text"
 					name="email"
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
 				></input>
 				<p className="login-tx-password">password</p>
 				<input
