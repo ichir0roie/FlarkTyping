@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useDebugValue, useEffect, useState } from "react";
 import Login from "./Login";
 import reactDom from "react-dom";
 
@@ -118,11 +118,6 @@ function App(props) {
 		}
 	}
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		props.setLogin(false);
-	};
-
 	function createMenuBts() {
 		let url = new URL(ENDPOINT);
 		let params = { menu: "all" };
@@ -137,13 +132,6 @@ function App(props) {
 			.then((data) => {
 				let menuBtBuf = [];
 
-				menuBtBuf.push(
-					<div className="Menu-item">
-						<button className="Menu-item-bt" onClick={() => handleLogout()}>
-							LOGOUT
-						</button>
-					</div>
-				);
 				const menu = data["menu"];
 				for (let i = 0; i < menu.length; i++) {
 					menuBtBuf.push(
@@ -199,7 +187,9 @@ function App(props) {
 				<p>{inptTex}</p>
 				<button onClick={() => handleBtMore()}>one more</button>
 			</div>
-			<div className="Menu-bar">{menuBts}</div>
+			<div className="Menu-bar">
+				<div>{menuBts}</div>
+			</div>
 		</div>
 	);
 

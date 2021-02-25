@@ -75,6 +75,8 @@ function Login(props) {
 
 	const Login = (
 		<div className="Login">
+			<h1>ログイン画面</h1>
+
 			<form method="post" onSubmit={handleLogin}>
 				<p className="login-tx-email">email</p>
 				<input

@@ -5,15 +5,16 @@ import reactDom from "react-dom";
 import Login from "./Login";
 import Game from "./Game";
 
-let signIn = false;
-if (localStorage.getItem("token")) {
-	// ログインしている場合に任意のメソッドを実行
-	console.log("signined");
-	signIn = true;
-}
-
 function App() {
-	const [isLogined, setLogin] = useState(signIn);
+	const [isLogined, setLogin] = useState(false);
+	const [signinMode, setSigninMode] = useState(false);
+	useEffect(() => {
+		if (localStorage.getItem("token")) {
+			// ログインしている場合に任意のメソッドを実行
+			console.log("signined");
+			setLogin(true);
+		}
+	}, []);
 
 	const AppLogin = (
 		<div className="App">
@@ -32,16 +33,15 @@ function App() {
 				<p className="App-title">FlaskTyping</p>
 			</header>
 			<body>
-				<Game setLogin={setLogin} />
+				<Game
+					isLogined={isLogined}
+					setLogin={setLogin}
+					setSigninMode={setSigninMode}
+				/>
 			</body>
 		</div>
 	);
-
-	if (isLogined) {
-		return AppGame;
-	} else {
-		return AppLogin;
-	}
+	return AppGame;
 }
 
 export default App;
