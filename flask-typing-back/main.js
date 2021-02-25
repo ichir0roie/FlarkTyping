@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
 function sendQuestions(res, myUrl) {
 	let qid = myUrl.searchParams.get("qid");
 	if (qid == null) {
-		qid = qidFirst;
+		return;
 	}
 
 	const typingData = gtd.getTypingData(qid);
@@ -46,7 +46,7 @@ function sendQuestions(res, myUrl) {
 }
 
 function sendMunu(res, myUrl) {
-	const menuFilter = myUrl.searchParams.get("munu");
+	const menuFilter = myUrl.searchParams.get("menu");
 	if (menuFilter == null) {
 		return;
 	}

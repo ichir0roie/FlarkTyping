@@ -1,59 +1,44 @@
 const typingDataPath = "/TypingData/";
 const fs = require("fs");
+var path = require("path"); // Path(Node API)：パスの文字列操作
 const csv = require("csv-parse/lib/sync");
 
 const workingDir = process.cwd() + typingDataPath;
 
-const path = require("path");
-
 let searchFilePaths = [];
 function getFileNames() {
 	searchFilePaths = [];
-	let searched = false;
-	searched = getFiles(workingDir);
-	return searchFilePaths;
+	getFiles(workingDir);
+	let names = [];
+	searchFilePaths.forEach(function (filePath) {
+		names.push(getFilenameFromPath(filePath));
+	});
+	return names;
 }
 
-function getFiles(filePath) {
-	fs.readdir(filePath, (err, files) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-		for (const file of files) {
-			const fp = path.join(filePath, file);
-			fs.stat(fp, (err, stats) => {
-				if (err) {
-					console.error(err);
-					return;
-				}
-				if (stats.isDirectory()) {
-					getFiles(fp);
-				} else {
-					searchFilePaths.push(fp);
-					console.log(fp);
-				}
-			});
+function getFiles(targetPath) {
+	let files = fs.readdirSync(targetPath);
+	files.forEach(function (targetFile) {
+		let fullpath = path.join(targetPath, targetFile);
+		let stats = fs.statSync(fullpath);
+		if (stats.isDirectory()) {
+			getFiles(fullpath);
+		} else {
+			searchFilePaths.push(fullpath);
 		}
 	});
-	return true;
+}
+
+function getFilenameFromPath(filePath) {
+	const pathSplited = filePath.split("\\");
+	let fileName = pathSplited[pathSplited.length - 1];
+	fileName = fileName.replace(".csv", "");
+	return fileName;
 }
 
 exports.getMenu = function (filter) {
 	const names = getFileNames();
 	console.log(names);
+
+	return names;
 };
-
-// exports.getMenu = function (qId) {
-// 	let tdp = typingDataPath + qId + ".csv";
-
-// 	let typingData = [];
-
-// 	let tmpDt = fs.readFileSync(__dirname + tdp);
-// 	let res = csv(tmpDt);
-
-// 	for (var i = 0; i < res.length; i++) {
-// 		typingData[i] = res[i][0];
-// 	}
-// 	return typingData;
-// };
