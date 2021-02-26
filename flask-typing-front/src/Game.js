@@ -23,7 +23,9 @@ var duringGame = false;
 const ENDPOINT = Data.dataApi;
 
 function setTestQuestions() {
-	questions = ["front", "testData"];
+	questions = ["サーバがオフラインです。",
+		"問題が発生していると思われるため、",
+		"お問い合わせください。"];
 }
 
 setTestQuestions();
@@ -83,6 +85,8 @@ function App(props) {
 	const [inptTex, setTex] = useState("");
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
+
+	const[userName,setUserName]=useState("gest user")
 
 	const [menuBts, setMenuBts] = useState([]);
 
@@ -188,6 +192,10 @@ function App(props) {
 				<button onClick={() => handleBtMore()}>one more</button>
 			</div>
 			<div className="Menu-bar">
+				<div>
+					<p>user name</p>
+					<p>{userName}</p>
+				</div>
 				<div>{menuBts}</div>
 			</div>
 		</div>
