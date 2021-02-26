@@ -178,6 +178,15 @@ function App(props) {
 				setTestQuestions();
 			});
 	};
+	
+	const[stopwatch,setStopwatch]=useState(0);
+	let startTime=null;
+	let finishTime=null;
+	const startStopWatch=()=>{
+		setStopwatch(0);
+		startTime=Date.now();
+		finishTime=Data.now();
+	}
 
 	const App = (
 		<div className="App-body">
