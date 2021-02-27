@@ -3,7 +3,7 @@ import reactDom from "react-dom";
 
 const request = require("request");
 
-const Data = require("../Data");
+const Data = require("./Data");
 
 var questions = [];
 

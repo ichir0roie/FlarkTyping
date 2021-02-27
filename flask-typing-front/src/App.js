@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import reactDom from "react-dom";
 
 import Login from "./Login";
-import Game from "./GamePages/Game.js";
+import Game from "./Game";
 
 function App() {
 	const [isLogined, setLogin] = useState(false);
