@@ -1,12 +1,11 @@
-import "./App.css";
+import "../App.css";
 import React, { useEffect, useState } from "react";
 import reactDom from "react-dom";
 
 import Title from "./Title";
-import Play from "./Play";
 import Result from "./Result";
 
-const Data = require("./Data");
+const Data = require("../Data");
 
 var questions = [];
 

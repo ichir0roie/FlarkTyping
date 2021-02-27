@@ -1,11 +1,11 @@
 import { render } from "@testing-library/react";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import App from "../App";
 
 const axios = require("axios").default;
 
-const Data = require("./Data");
+const Data = require("../Data");
 const apiKey = Data.apiKey;
 const signupUrl =
 	"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + apiKey;

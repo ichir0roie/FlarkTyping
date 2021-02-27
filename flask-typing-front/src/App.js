@@ -2,8 +2,8 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import reactDom from "react-dom";
 
-import Login from "./Login";
-import Game from "./Game";
+import Login from "./Seculity/Login";
+import Game from "./GamePages/Game";
 
 function App() {
 	const [isLogined, setLogin] = useState(false);
