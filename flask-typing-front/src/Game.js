@@ -6,12 +6,8 @@ import Title from "./Title";
 import Play from "./Play";
 import Result from "./Result";
 
-function App() {
-	const [view, setView] = useState(<Title />);
+const Data = require("./Data");
 
-<<<<<<< HEAD
-	setView(<Play />);
-=======
 var questions = [];
 
 var nowAnswer = "";
@@ -28,9 +24,11 @@ var duringGame = false;
 const ENDPOINT = Data.dataApi;
 
 function setTestQuestions() {
-	questions = ["サーバがオフラインです。",
+	questions = [
+		"サーバがオフラインです。",
 		"問題が発生していると思われるため、",
-		"お問い合わせください。"];
+		"お問い合わせください。",
+	];
 }
 
 setTestQuestions();
@@ -91,7 +89,7 @@ function App(props) {
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
 
-	const[userName,setUserName]=useState("gest user")
+	const [userName, setUserName] = useState("gest user");
 
 	const [menuBts, setMenuBts] = useState([]);
 
@@ -205,9 +203,7 @@ function App(props) {
 			</div>
 		</div>
 	);
->>>>>>> parent of eb1fb9be (need stopwatch)
 
-	const App = <div>{view}</div>;
 	return App;
 }
 
