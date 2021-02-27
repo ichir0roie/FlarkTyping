@@ -53,12 +53,8 @@ function sendMunu(res, myUrl) {
 		return;
 	}
 
-	const meunData = gtm.getMenu(menuFilter);
-	sendData = JSON.stringify({
-		menu: meunData,
-	});
-
-	res.write(sendData);
+	const meunData = gtm.getMenu("all");
+	res.write(meunData);
 }
 
 server.listen(port, hostname, () => {

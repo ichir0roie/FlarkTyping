@@ -6,17 +6,38 @@ const csv = require("csv-parse/lib/sync");
 const workingDir = process.cwd() + typingDataPath;
 
 let searchFilePaths = [];
-function getFileNames() {
+let searchDirPaths = [];
+
+//todo:create version of use json.stringfy
+//function getFileJsons() {
+
+// for learning.
+function getFileJsons() {
 	searchFilePaths = [];
+	searchDirPaths = [];
 	getFiles(workingDir);
-	let names = [];
-	searchFilePaths.forEach(function (filePath) {
-		names.push(getFilenameFromPath(filePath));
-	});
-	return names;
+
+	let jsonText = "{ questions : ";
+	for (let i = 0; i < searchDirPaths.length; i++) {
+		let dirName = getDirnameFromPath(searchDirPaths[i]);
+		let files = searchFilePaths[i];
+		jsonText += '{ "' + dirName + '" : ' + " [";
+		for (let j = 0; j < files.length; j++) {
+			const fileName = getFilenameFromPath(files[j]);
+			jsonText += '"' + fileName + '"';
+			if (j < files.length - 1) {
+				jsonText += ",";
+			}
+		}
+		jsonText += "]}";
+	}
+	jsonText += "}";
+
+	return jsonText;
 }
 
 function getFiles(targetPath) {
+	let retFilePaths = [];
 	let files = fs.readdirSync(targetPath);
 	files.forEach(function (targetFile) {
 		let fullpath = path.join(targetPath, targetFile);
@@ -24,9 +45,13 @@ function getFiles(targetPath) {
 		if (stats.isDirectory()) {
 			getFiles(fullpath);
 		} else {
-			searchFilePaths.push(fullpath);
+			retFilePaths.push(fullpath);
 		}
 	});
+	if (retFilePaths.length > 0) {
+		searchDirPaths.push(targetPath);
+		searchFilePaths.push(retFilePaths);
+	}
 }
 
 function getFilenameFromPath(filePath) {
@@ -36,8 +61,14 @@ function getFilenameFromPath(filePath) {
 	return fileName;
 }
 
+function getDirnameFromPath(dirName) {
+	const pathSplited = dirName.split("\\");
+	let fileName = pathSplited[pathSplited.length - 1];
+	return fileName;
+}
+
 exports.getMenu = function (filter) {
-	const names = getFileNames();
+	const names = getFileJsons();
 	console.log(names);
 
 	return names;

@@ -3,14 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
-import AppTest from "./AppTest";
-
 import reportWebVitals from "./reportWebVitals";
+
+import Title from "../GamePages/Title";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
-		{/* <AppTest /> */}
+		<Title />
 	</React.StrictMode>,
 	document.getElementById("root")
 );
