@@ -1,11 +1,9 @@
-import "./App.css";
 import React, { useDebugValue, useEffect, useState } from "react";
-import Login from "./Login";
 import reactDom from "react-dom";
 
 const request = require("request");
 
-const Data = require("./Data");
+const Data = require("../Data");
 
 var questions = [];
 
@@ -23,9 +21,11 @@ var duringGame = false;
 const ENDPOINT = Data.dataApi;
 
 function setTestQuestions() {
-	questions = ["サーバがオフラインです。",
+	questions = [
+		"サーバがオフラインです。",
 		"問題が発生していると思われるため、",
-		"お問い合わせください。"];
+		"お問い合わせください。",
+	];
 }
 
 setTestQuestions();
@@ -86,7 +86,7 @@ function App(props) {
 	const [appNowSts, setNowSts] = useState(nowStsPt);
 	const [appQues, setQues] = useState(questions[questionNo]);
 
-	const[userName,setUserName]=useState("gest user")
+	const [userName, setUserName] = useState("gest user");
 
 	const [menuBts, setMenuBts] = useState([]);
 
@@ -178,15 +178,15 @@ function App(props) {
 				setTestQuestions();
 			});
 	};
-	
-	const[stopwatch,setStopwatch]=useState(0);
-	let startTime=null;
-	let finishTime=null;
-	const startStopWatch=()=>{
+
+	const [stopwatch, setStopwatch] = useState(0);
+	let startTime = null;
+	let finishTime = null;
+	const startStopWatch = () => {
 		setStopwatch(0);
-		startTime=Date.now();
-		finishTime=Data.now();
-	}
+		startTime = Date.now();
+		finishTime = Data.now();
+	};
 
 	const App = (
 		<div className="App-body">
