@@ -9,32 +9,53 @@ let searchFilePaths = [];
 let searchDirPaths = [];
 
 //todo:create version of use json.stringfy
-//function getFileJsons() {
-
-// for learning.
 function getFileJsons() {
 	searchFilePaths = [];
 	searchDirPaths = [];
 	getFiles(workingDir);
 
-	let jsonText = "{ questions : ";
+	let jsonData = [];
+
 	for (let i = 0; i < searchDirPaths.length; i++) {
 		let dirName = getDirnameFromPath(searchDirPaths[i]);
 		let files = searchFilePaths[i];
-		jsonText += '{ "' + dirName + '" : ' + " [";
+		let filesRenamed = [];
 		for (let j = 0; j < files.length; j++) {
 			const fileName = getFilenameFromPath(files[j]);
-			jsonText += '"' + fileName + '"';
-			if (j < files.length - 1) {
-				jsonText += ",";
-			}
+			filesRenamed.push(fileName);
 		}
-		jsonText += "]}";
+		jsonData.push([dirName, filesRenamed]);
 	}
-	jsonText += "}";
+
+	let jsonText = JSON.stringify(jsonData);
 
 	return jsonText;
 }
+
+// for learning.
+// function getFileJsons() {
+// 	searchFilePaths = [];
+// 	searchDirPaths = [];
+// 	getFiles(workingDir);
+
+// 	let jsonText = "{ questions : ";
+// 	for (let i = 0; i < searchDirPaths.length; i++) {
+// 		let dirName = getDirnameFromPath(searchDirPaths[i]);
+// 		let files = searchFilePaths[i];
+// 		jsonText += '{ "' + dirName + '" : ' + " [";
+// 		for (let j = 0; j < files.length; j++) {
+// 			const fileName = getFilenameFromPath(files[j]);
+// 			jsonText += '"' + fileName + '"';
+// 			if (j < files.length - 1) {
+// 				jsonText += ",";
+// 			}
+// 		}
+// 		jsonText += "]}";
+// 	}
+// 	jsonText += "}";
+
+// 	return jsonText;
+// }
 
 function getFiles(targetPath) {
 	let retFilePaths = [];
