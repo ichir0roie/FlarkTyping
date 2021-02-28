@@ -48,6 +48,8 @@ function App(props) {
 	}
 	useEffect(() => createMenuBts(), []);
 
+	
+
 	const App = (
 		<div>
 			<h1 className="select-question">問題選択</h1>
