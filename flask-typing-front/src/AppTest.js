@@ -1,11 +1,12 @@
 import "./App.css";
 
 import Title from "./GamePages/Title";
+import Test from "./GamePages/Play";
 
 function App(props) {
 	const App = (
-		<div>
-			<Title />
+		<div className="App-body">
+			<Test/>
 		</div>
 	);
 
