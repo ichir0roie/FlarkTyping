@@ -8,11 +8,19 @@ import Play from "./Play";
 import Result from "./Result";
 
 function App(props) {
-	//initial page
+	
+	const startGame=(questionId)=>{
+		setView(<Play questionId={questionId}/>);
+	}
+
 	const setQuestion = (questionId) => {
-		setView(<Pre questionId={questionId} />);
+		setView(<Pre questionId={questionId} 
+			startGame={startGame}
+		/>);
 	};
 	const title = <Title setQuestion={setQuestion} />;
+
+
 
 	//init hooks
 	const [viwe, setView] = useState(title);
@@ -24,7 +32,7 @@ function App(props) {
 	// 	}
 	// }, []);
 
-	const App = <div>{viwe}</div>;
+	const App = <div className="App-body">{viwe}</div>;
 
 	return App;
 }

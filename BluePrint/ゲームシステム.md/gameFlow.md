@@ -1,5 +1,41 @@
 # ゲームの流れ
 
+## 画面遷移とパラメータ
+
+### 画面遷移
+
+1. タイトル
+   1. 問題選択
+2. 準備画面
+   1. スタートボタン
+      1. プレイ画面
+3. プレイ画面
+   1. 中断ボタン
+      1. 準備画面
+   2. クリア
+      1. 結果画面
+4. 結果画面
+   1. リトライボタン
+      1. 準備画面
+   2. 終了
+      1. タイトル
+
+### パラメータ移動
+
++ title→game→pre
+  + questionId
+  + onClickQuestion
++ pre→game→play
+  + questionId
+  + onClickStart
+  + userInfo
++ play→game→result
+  + questionId
+  + userInfo
+  + resultData
+
+## 全体構成
+
 1. [x] ページを開く
    1. [ ] 画面構成
    2. [ ] ログインボタン

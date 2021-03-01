@@ -6,24 +6,9 @@ const Data = require("../Data");
 
 function App(props) {
 	const App = (
-		<div className="App-body">
-			<div className="Type-game">
-				<p className="App-status">{appNowSts}</p>
-				<p className="App-question">{appQues}</p>
-				<input
-					className="App-answer"
-					onChange={(e) => handleOnChange(e)}
-				></input>
-				<p>{inptTex}</p>
-				<button onClick={() => handleBtMore()}>one more</button>
-			</div>
-			<div className="Menu-bar">
-				<div>
-					<p>user name</p>
-					<p>{userName}</p>
-				</div>
-				<div>{menuBts}</div>
-			</div>
+		<div>
+		<p>test view strings</p>
+		<p>{props.questionId}</p>
 		</div>
 	);
 
