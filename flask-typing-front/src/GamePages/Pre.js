@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 function App(props) {
 	const App = (
 		<div>
-			<h1>{"問題名"}</h1>
+			<h1>{props.questionId}</h1>
 			<button>スタート</button>
 		</div>
 	);

@@ -34,7 +34,15 @@ function App(props) {
 
 					let buttonsCmp = [];
 					for (let j = 0; j < quesIds.length; j++) {
-						buttonsCmp.push(<button>{quesIds[j]}</button>);
+						buttonsCmp.push(
+							<button
+								className="bt-question"
+								id={quesIds[j]}
+								onClick={(e) => onClickQuestion(e)}
+							>
+								{quesIds[j]}
+							</button>
+						);
 					}
 					menuCmp.push(
 						<div>
@@ -48,7 +56,9 @@ function App(props) {
 	}
 	useEffect(() => createMenuBts(), []);
 
-	
+	const onClickQuestion = (e) => {
+		props.setQuestion(e.target.id);
+	};
 
 	const App = (
 		<div>
