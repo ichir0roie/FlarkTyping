@@ -16,6 +16,7 @@ exports.getTypingData = function (qId) {
 		for (var i = 0; i < res.length; i++) {
 			typingData[i] = res[i][0];
 		}
+		console.log(typingData);
 	} catch (error) {
 		console.log(error);
 	}

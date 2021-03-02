@@ -6,7 +6,8 @@ import Test from "./GamePages/Play";
 function App(props) {
 	const App = (
 		<div className="App-body">
-			<Test/>
+			<Test questionId={"data1"}
+			questionFolder="testData1"/>
 		</div>
 	);
 

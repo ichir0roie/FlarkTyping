@@ -5,14 +5,39 @@ import reactDom from "react-dom";
 const Data = require("../Data");
 
 function App(props) {
-	const getQuestionData = (questionId) => {
-		//todo next write this.
-		return [];
-	};
 
-	const [questions, setQuestions] = useState(getQuestionData(props.questionId));
+
+	const [questions, setQuestions] = useState([]);
 	const [elapseTime, setElapseTime] = useState(0);
 	const [nowPlace, setNowPlace] = useState(0);
+
+	const getQuestionData = () => {
+		//todo next write this.
+		let url = new URL(Data.dataApi);
+		const quesPath = props.questionFolder + "/" + props.questionId;
+		let params = { qid: quesPath };
+		url.search = new URLSearchParams(params).toString();
+		const res = fetch(url, {
+			method: "GET",
+			headers: new Headers(),
+			mode: "cors",
+			cache: "default",
+		}).then(res => res.json())
+			.then((data) => {
+				console.log(data);
+				const questionData = data["questions"];
+				setQuestions(questionData);
+				//todo this is bad
+			});
+	};
+	useEffect(() => {
+		getQuestionData(props.questionId);
+	}, [])
+
+	const onHandleChangeInput=(e)=>{
+		const inputText=e.target.text;
+		console.log(inputText);
+	}
 
 	const App = (
 		<div>
@@ -24,7 +49,7 @@ function App(props) {
 				<p>{questions[nowPlace]}</p>
 				<input
 					onChange={(e) => {
-						console.log(e.target.value);
+						onHandleChangeInput(e);
 					}}
 				></input>
 			</div>
