@@ -9,7 +9,7 @@ function App(props) {
 
 	const [questions, setQuestions] = useState([]);
 	const [elapseTime, setElapseTime] = useState(0);
-	const [nowPlace, setNowPlace] = useState(0);
+	const [nowQuestion, setNowQuestion] = useState(0);
 
 	const getQuestionData = () => {
 		//todo next write this.
@@ -34,9 +34,24 @@ function App(props) {
 		getQuestionData(props.questionId);
 	}, [])
 
-	const onHandleChangeInput=(e)=>{
-		const inputText=e.target.text;
-		console.log(inputText);
+	const onHandleChangeInput = (e) => {
+		const inputText = e.target.value;
+		// console.log(inputText);
+		if (inputText == questions[nowQuestion]) {
+			console.log("hit");
+			e.target.value = "";
+			nextQuestion();
+		};
+	}
+
+	const nextQuestion = () => {
+		if(nowQuestion<questions.length){
+			setNowQuestion(nowQuestion + 1);
+		}else if(nowQuestion)
+
+	}
+	const judgeGame = () => {
+
 	}
 
 	const App = (
@@ -46,7 +61,7 @@ function App(props) {
 				<p>{props.questionId}</p>
 			</div>
 			<div className="play-act">
-				<p>{questions[nowPlace]}</p>
+				<p>{questions[nowQuestion]}</p>
 				<input
 					onChange={(e) => {
 						onHandleChangeInput(e);
