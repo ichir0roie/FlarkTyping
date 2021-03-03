@@ -8,9 +8,9 @@ function App(props) {
 	const [questions, setQuestions] = useState([]);
 	const [elapseTime, setElapseTime] = useState(0);
 	const [nowQuestion, setNowQuestion] = useState(0);
-
+	const [gameState,setGameState]=useState('type!');
+	
 	const [timeStart, setTimeStart] = useState(new Date().getTime());
-	const [timeEnd, setTimeEnd] = useState(timeStart);
 
 	const getQuestionData = () => {
 		//todo next write this.
@@ -53,26 +53,27 @@ function App(props) {
 			judgeGame();
 		}
 	};
-	const judgeGame = () => {};
+	const judgeGame = () => {
+		setGameState("finish!");
+
+		// shold stop timer
+		clearInterval(intervalId);
+		setIntervalId(0);
+	};
 
 	const clacElapse = () => {
 		const now = new Date().getTime();
-		setElapseTime(parseInt((now - timeStart) / 1));
-
-		console.log("++++++++++++++++++++");
-		console.log("calced value : " + parseInt((now - timeStart) / 1));
-		console.log("state  value : " + elapseTime);
-		console.log("ref    value : " + refElapseTime.current);
+		var elapseText=parseInt((now - timeStart) / 100)/10;
+		elapseText=elapseText.toString();
+		if(elapseText.indexOf(".")<=0){
+			elapseText=elapseText+".0";
+		}
+		setElapseTime(elapseText);
 	};
 
-	const refElapseTime = useRef(elapseTime);
+	const [intervalId,setIntervalId]=useState(null);
 	useEffect(() => {
-		refElapseTime.current = elapseTime;
-		console.log("now    value : " + elapseTime);
-	}, [elapseTime]);
-
-	useEffect(() => {
-		setInterval(clacElapse, 2000);
+		setIntervalId(setInterval(clacElapse, 100));
 	}, []);
 
 	const App = (
@@ -80,6 +81,7 @@ function App(props) {
 			<div className="play-info">
 				<p>test view strings</p>
 				<p>{props.questionId}</p>
+				<p>{gameState}</p>
 			</div>
 			<div className="play-act">
 				<p>経過時間：{elapseTime}</p>
