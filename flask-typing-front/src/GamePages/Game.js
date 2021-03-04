@@ -8,22 +8,17 @@ import Play from "./Play";
 import Result from "./Result";
 
 function App(props) {
-	
-	const startGame=(questionId)=>{
-		setView(<Play questionId={questionId}/>);
-	}
+	const startGame = (questionId) => {
+		setView(<Play questionId={questionId} />);
+	};
 
 	const setQuestion = (questionId) => {
-		setView(<Pre questionId={questionId} 
-			startGame={startGame}
-		/>);
+		setView(<Pre questionId={questionId} startGame={startGame} />);
 	};
 	const title = <Title setQuestion={setQuestion} />;
 
-
-
 	//init hooks
-	const [viwe, setView] = useState(title);
+	const [view, setView] = useState(title);
 
 	// useEffect(() => {
 	// 	if (true) {
@@ -32,7 +27,7 @@ function App(props) {
 	// 	}
 	// }, []);
 
-	const App = <div className="App-body">{viwe}</div>;
+	const App = <div className="App-body">{view}</div>;
 
 	return App;
 }

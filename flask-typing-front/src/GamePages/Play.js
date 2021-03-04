@@ -2,15 +2,19 @@ import "../App.css";
 import React, { useEffect, useState, useRef } from "react";
 import reactDom from "react-dom";
 
+import Result from "./Result";
+
 const Data = require("../Data");
 
 function App(props) {
 	const [questions, setQuestions] = useState([]);
 	const [elapseTime, setElapseTime] = useState(0);
 	const [nowQuestion, setNowQuestion] = useState(0);
-	const [gameState,setGameState]=useState('type!');
-	
+	const [gameState, setGameState] = useState("type!");
+
 	const [timeStart, setTimeStart] = useState(new Date().getTime());
+
+	let App = null;
 
 	const getQuestionData = () => {
 		//todo next write this.
@@ -38,6 +42,12 @@ function App(props) {
 
 	const onHandleChangeInput = (e) => {
 		const inputText = e.target.value;
+
+		// set elapse if first
+		if (nowQuestion == 0 && intervalId == null) {
+			setIntervalId(setInterval(clacElapse, 100));
+		}
+
 		console.log(inputText);
 		if (inputText == questions[nowQuestion]) {
 			console.log("hit");
@@ -47,7 +57,7 @@ function App(props) {
 	};
 
 	const nextQuestion = () => {
-		if (nowQuestion < questions.length) {
+		if (nowQuestion < questions.length - 1) {
 			setNowQuestion(nowQuestion + 1);
 		} else {
 			judgeGame();
@@ -56,27 +66,39 @@ function App(props) {
 	const judgeGame = () => {
 		setGameState("finish!");
 
-		// shold stop timer
 		clearInterval(intervalId);
-		setIntervalId(0);
+
+		// get strings length
+		let sumLen = 0;
+		questions.forEach((s) => {
+			sumLen += s.length;
+		});
+
+		props.setView(
+			<Result
+				elapseTime={elapseTime}
+				questionId={props.questionId}
+				questionsLength={sumLen}
+			/>
+		);
 	};
 
 	const clacElapse = () => {
 		const now = new Date().getTime();
-		var elapseText=parseInt((now - timeStart) / 100)/10;
-		elapseText=elapseText.toString();
-		if(elapseText.indexOf(".")<=0){
-			elapseText=elapseText+".0";
+		var elapseText = parseInt((now - timeStart) / 100) / 10;
+		elapseText = elapseText.toString();
+		if (elapseText.indexOf(".") <= 0) {
+			elapseText = elapseText + ".0";
 		}
 		setElapseTime(elapseText);
 	};
 
-	const [intervalId,setIntervalId]=useState(null);
-	useEffect(() => {
-		setIntervalId(setInterval(clacElapse, 100));
-	}, []);
+	const [intervalId, setIntervalId] = useState(null);
+	// useEffect(() => {
+	// 	setIntervalId(setInterval(clacElapse, 100));
+	// }, []);
 
-	const App = (
+	App = (
 		<div>
 			<div className="play-info">
 				<p>test view strings</p>
