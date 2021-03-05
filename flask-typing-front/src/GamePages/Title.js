@@ -59,7 +59,7 @@ function App(props) {
 	useEffect(() => createMenuBts(), []);
 
 	const onClickQuestion = (e) => {
-		props.setView(<Pre questionId={e.target.id} setView={props.setView} />);
+		props.setPre(e.target.id);
 	};
 
 	const App = (

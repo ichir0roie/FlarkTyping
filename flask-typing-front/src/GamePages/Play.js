@@ -12,7 +12,7 @@ function App(props) {
 	const [nowQuestion, setNowQuestion] = useState(0);
 	const [gameState, setGameState] = useState("type!");
 
-	const [timeStart, setTimeStart] = useState(new Date().getTime());
+	let timeStart = new Date().getTime();
 
 	let App = null;
 
@@ -36,17 +36,9 @@ function App(props) {
 				//todo this is bad
 			});
 	};
-	useEffect(() => {
-		getQuestionData(props.questionId);
-	}, []);
 
 	const onHandleChangeInput = (e) => {
 		const inputText = e.target.value;
-
-		// set elapse if first
-		if (nowQuestion == 0 && intervalId == null) {
-			setIntervalId(setInterval(clacElapse, 100));
-		}
 
 		console.log(inputText);
 		if (inputText == questions[nowQuestion]) {
@@ -74,14 +66,7 @@ function App(props) {
 			sumLen += s.length;
 		});
 
-		props.setView(
-			<Result
-				elapseTime={elapseTime}
-				questionId={props.questionId}
-				questionsLength={sumLen}
-				setView={props.setView}
-			/>
-		);
+		props.setResult(elapseTime, sumLen);
 	};
 
 	const clacElapse = () => {
@@ -95,9 +80,25 @@ function App(props) {
 	};
 
 	const [intervalId, setIntervalId] = useState(null);
-	// useEffect(() => {
-	// 	setIntervalId(setInterval(clacElapse, 100));
-	// }, []);
+
+	const handleReset = () => {
+		props.setPre();
+	};
+	const handleEnd = () => {
+		props.setTitle();
+	};
+
+	const inputRef = useRef(null);
+
+	// start game
+	useEffect(() => {
+		inputRef.current.focus();
+		getQuestionData(props.questionId);
+		if (nowQuestion == 0 && intervalId == null) {
+			timeStart = new Date().getTime();
+			setIntervalId(setInterval(clacElapse, 100));
+		}
+	}, []);
 
 	App = (
 		<div>
@@ -110,14 +111,15 @@ function App(props) {
 				<p>経過時間：{elapseTime}</p>
 				<p>{questions[nowQuestion]}</p>
 				<input
+					ref={inputRef}
 					onChange={(e) => {
 						onHandleChangeInput(e);
 					}}
 				></input>
 			</div>
 			<div className="play-admin">
-				<button>reset</button>
-				<button>end</button>
+				<button onClick={handleReset}>reset</button>
+				<button onClick={handleEnd}>end</button>
 			</div>
 		</div>
 	);
