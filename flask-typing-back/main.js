@@ -59,5 +59,6 @@ function sendMunu(res, myUrl) {
 
 server.listen(port, hostname, () => {
 	console.log(`Server running at http://${hostname}:${port}/`);
+	console.log(`Server running at http://${hostname}:${port}/?qid=data1`);
 	console.log(`Server running at http://${hostname}:${port}/?menu=all`);
 });

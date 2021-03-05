@@ -19,7 +19,7 @@ function App(props) {
 	const getQuestionData = () => {
 		//todo next write this.
 		let url = new URL(Data.dataApi);
-		const quesPath = props.questionFolder + "/" + props.questionId;
+		const quesPath = props.questionId;
 		let params = { qid: quesPath };
 		url.search = new URLSearchParams(params).toString();
 		const res = fetch(url, {
@@ -79,6 +79,7 @@ function App(props) {
 				elapseTime={elapseTime}
 				questionId={props.questionId}
 				questionsLength={sumLen}
+				setView={props.setView}
 			/>
 		);
 	};

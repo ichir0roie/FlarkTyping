@@ -8,24 +8,14 @@ import Play from "./Play";
 import Result from "./Result";
 
 function App(props) {
-	const startGame = (questionId) => {
-		setView(<Play questionId={questionId} />);
-	};
-
-	const setQuestion = (questionId) => {
-		setView(<Pre questionId={questionId} startGame={startGame} />);
-	};
-	const title = <Title setQuestion={setQuestion} />;
-
 	//init hooks
-	const [view, setView] = useState(title);
+	const [view, setView] = useState();
 
-	// useEffect(() => {
-	// 	if (true) {
-	// 		setView(<Play />);
-	// 		setView(<Result />);
-	// 	}
-	// }, []);
+	const title = <Title setView={setView} />;
+
+	useEffect(() => {
+		setView(title);
+	}, []);
 
 	const App = <div className="App-body">{view}</div>;
 

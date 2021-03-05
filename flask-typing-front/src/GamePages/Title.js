@@ -1,6 +1,8 @@
 import "../App.css";
 import React, { useEffect, useState } from "react";
 
+import Pre from "./Pre";
+
 const Data = require("../Data");
 
 const ENDPOINT = Data.dataApi;
@@ -57,7 +59,7 @@ function App(props) {
 	useEffect(() => createMenuBts(), []);
 
 	const onClickQuestion = (e) => {
-		props.setQuestion(e.target.id);
+		props.setView(<Pre questionId={e.target.id} setView={props.setView} />);
 	};
 
 	const App = (
