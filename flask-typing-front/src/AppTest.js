@@ -7,12 +7,15 @@ import Play from "./GamePages/Play";
 import Resl from "./GamePages/Result";
 import Pre from "./GamePages/Pre";
 
+import Login from "./Seculity/Login";
+
 function App(props) {
 	const [view, setView] = useState();
 
 	const firstView = (
 		// <Play questionId={"data1"} questionFolder="testData1" setView={setView} />
-		<Pre questionId={"data1"} />
+		// <Pre questionId={"data1"} />
+		<Login/>
 	);
 	useEffect(() => {
 		setView(firstView);

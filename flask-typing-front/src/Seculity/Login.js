@@ -1,7 +1,8 @@
 import { render } from "@testing-library/react";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import App from "../App";
+
+import "../css/Login.css";
 
 const axios = require("axios").default;
 
@@ -75,29 +76,29 @@ function Login(props) {
 
 	const Login = (
 		<div className="Login">
-			<h1>ログイン画面</h1>
+			<p>ログイン</p>
 
-			<form method="post" onSubmit={handleLogin}>
-				<p className="login-tx-email">email</p>
-				<input
-					className="login-in-email"
-					type="text"
-					name="email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				></input>
-				<p className="login-tx-password">password</p>
-				<input
-					className="login-in-password"
-					value={password}
-					type="password"
-					name="password"
-					onChange={(e) => setPassword(e.target.value)}
-				></input>
-				<div>
-					<button className="login-bt-in">signIn</button>
-				</div>
-			</form>
+			<p className="login-tx-email">email</p>
+			<input
+				className="login-in-email"
+				type="text"
+				name="email"
+				value={email}
+				onChange={(e) => setEmail(e.target.value)}
+			></input>
+			<p className="login-tx-password">password</p>
+			<input
+				className="login-in-password"
+				value={password}
+				type="password"
+				name="password"
+				onChange={(e) => setPassword(e.target.value)}
+			></input>
+			<div>
+				<button className="login-bt-in" onClick={handleLogin}>
+					signIn
+				</button>
+			</div>
 			<div>
 				<button className="login-bt-up" onClick={handleSignUp}>
 					signUp
@@ -108,7 +109,21 @@ function Login(props) {
 			</div>
 		</div>
 	);
-	return Login;
+
+	const [userName,setUserName]=useState("");
+
+	const Logined=(
+		<div>
+			<p>user name</p>
+			<p>{userName}</p>
+		</div>	
+		);
+
+	const view=Login;
+	if(false){
+		view=Logined;
+	}
+	return view;
 }
 
 export default Login;

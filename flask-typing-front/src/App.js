@@ -11,6 +11,7 @@ function App() {
 		<div className="App">
 			<header className="App-header">
 				<p className="App-title">FlaskTyping</p>
+				<Login/>
 			</header>
 			<body>{view}</body>
 		</div>
