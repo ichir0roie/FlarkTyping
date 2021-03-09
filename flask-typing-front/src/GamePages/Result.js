@@ -2,6 +2,25 @@ import "../App.css";
 import React, { useEffect, useState } from "react";
 
 function App(props) {
+	useEffect(() => {
+		window.addEventListener("keydown", gameKeyEvent);
+		return () => {
+			window.removeEventListener("keydown", gameKeyEvent);
+		};
+	}, []);
+	function gameKeyEvent(e) {
+		switch (e.code) {
+			case "KeyR":
+				props.setPre();
+				break;
+			case "KeyE":
+				props.setTitle();
+				break;
+			default:
+				console.log("this is result : " + e.code);
+		}
+	}
+
 	let LPM = parseInt((props.questionsLength / props.elapseTime) * 60);
 
 	const handleReset = () => {

@@ -4,18 +4,57 @@ import { useEffect, useState } from "react";
 
 import Title from "./GamePages/Title";
 import Play from "./GamePages/Play";
-import Resl from "./GamePages/Result";
+import Result from "./GamePages/Result";
 import Pre from "./GamePages/Pre";
 
 function App(props) {
+	//init props
+	let questionId = "data1";
 	const [view, setView] = useState();
 
-	const firstView = (
-		// <Play questionId={"data1"} questionFolder="testData1" setView={setView} />
-		<Pre questionId={"data1"} />
-	);
+	//init states
+	const setTitle = () => {
+		setView(<Title setPre={setPre} />);
+	};
+	const setPre = (qid) => {
+		if (typeof qid !== "undefined") {
+			questionId = qid;
+		}
+		setView(<Pre questionId={questionId} setPlay={setPlay} />);
+	};
+
+	const setPlay = () => {
+		setView(
+			<Play
+				questionId={questionId}
+				setResult={setResult}
+				setPre={setPre}
+				setTitle={setTitle}
+			/>
+		);
+	};
+
+	const setResult = (elapseTime, sumLen) => {
+		setView(
+			<Result
+				elapseTime={elapseTime}
+				questionId={questionId}
+				questionsLength={sumLen}
+				setPre={setPre}
+				setTitle={setTitle}
+			/>
+		);
+	};
+
 	useEffect(() => {
-		setView(firstView);
+		setView(
+			<Play
+				questionId={"data1"}
+				setResult={setResult}
+				setPre={setPre}
+				setTitle={setTitle}
+			/>
+		);
 	}, []);
 
 	const App = <div className="App-body">{view}</div>;

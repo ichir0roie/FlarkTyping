@@ -7,6 +7,22 @@ import Result from "./Result";
 const Data = require("../Data");
 
 function App(props) {
+	useEffect(() => {
+		window.addEventListener("keydown", gameKeyEvent);
+		return () => {
+			window.removeEventListener("keydown", gameKeyEvent);
+		};
+	}, []);
+	function gameKeyEvent(e) {
+		switch (e.code) {
+			case "Escape":
+				props.setPre();
+				break;
+			default:
+				console.log("this is play : " + e.code);
+		}
+	}
+
 	const [questions, setQuestions] = useState([]);
 	const [elapseTime, setElapseTime] = useState(0);
 	const [nowQuestion, setNowQuestion] = useState(0);

@@ -4,8 +4,30 @@ import React, { useEffect, useState } from "react";
 import Play from "./Play";
 
 function App(props) {
+	useEffect(() => {
+		window.addEventListener("keydown", gameKeyEvent);
+		return () => {
+			window.removeEventListener("keydown", gameKeyEvent);
+		};
+	}, []);
+	function gameKeyEvent(e) {
+		switch (e.code) {
+			case "KeyS":
+			case "Space":
+			case "Enter":
+				onClickStart();
+				break;
+			default:
+				console.log("this is pre : " + e.code);
+		}
+	}
+
+	const [started, setStarted] = useState(false);
 	const onClickStart = () => {
-		counter();
+		if (!started) {
+			counter();
+			setStarted(true);
+		}
 	};
 
 	let intervalId = null;
