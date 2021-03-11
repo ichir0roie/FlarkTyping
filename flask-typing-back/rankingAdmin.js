@@ -1,16 +1,16 @@
-const DataTypingPath = "/DataTyping/";
+const DataRankingPath = "/DataRanking/";
 const fs = require("fs");
 var path = require("path"); // Path(Node API)：パスの文字列操作
 const csv = require("csv-parse/lib/sync");
 
-const rootPath = process.cwd() + DataTypingPath;
+const rootPath = process.cwd() + DataRankingPath;
 
-exports.getDataTyping = function (qId) {
+exports.getDataRanking = function (qId) {
 	const targetPath = getTargetQuestionPath(rootPath, qId);
 
-	let DataTyping = [];
+	let DataRanking = [];
 	if (targetPath == null) {
-		return DataTyping;
+		return DataRanking;
 	}
 
 	try {
@@ -19,34 +19,33 @@ exports.getDataTyping = function (qId) {
 		let res = csv(tmpDt);
 
 		for (var i = 0; i < res.length; i++) {
-			DataTyping[i] = res[i][0];
+			DataRanking[i] = res[i];
 		}
-		console.log(DataTyping);
+		console.log(DataRanking);
 	} catch (error) {
 		console.log(error);
 	}
-	return DataTyping;
+	return DataRanking;
 };
 
 function getTargetQuestionPath(targetPath, targetQid) {
-	let targetQuestionPath = null;
+	let targetRankingPath = null;
 	const files = fs.readdirSync(targetPath);
 	for (var i = 0; i < files.length; i++) {
 		targetFile = files[i];
 		const fullpath = path.join(targetPath, targetFile);
 		const stats = fs.statSync(fullpath);
 		console.log(fullpath);
-		if (stats.isDirectory()) {
-			targetQuestionPath = getTargetQuestionPath(fullpath, targetQid);
-		} else {
+
+		if (!stats.isDirectory()) {
 			const qId = targetFile.replace(".csv", "");
 			if (qId == targetQid) {
-				targetQuestionPath = fullpath;
+				targetRankingPath = fullpath;
 			}
 		}
-		if (targetQuestionPath != null) {
+		if (targetRankingPath != null) {
 			break;
 		}
 	}
-	return targetQuestionPath;
+	return targetRankingPath;
 }

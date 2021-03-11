@@ -1,3 +1,4 @@
-const gtm = require("./getMenu.js");
+const testImport = require("./rankingAdmin.js");
 
-gtm.getMenu("all");
+let val = testImport.getDataRanking("data1");
+console.log(val);
