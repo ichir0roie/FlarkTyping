@@ -57,7 +57,12 @@ function App(props) {
 		);
 	}, []);
 
-	const App = <div className="App-body">{view}</div>;
+	const testView = (
+		<Result elapseTime={30.5} questionId={questionId} questionsLength={300} />
+	);
+
+	// const App = <div className="App-body">{view}</div>;
+	const App = <div className="App-body">{testView}</div>;
 
 	return App;
 }

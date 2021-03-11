@@ -1,11 +1,14 @@
-const gtd = require("./getTypingData.js");
+const gtd = require("./getDataTyping.js");
 const gtm = require("./getMenu.js");
 
 const hostData = require("./hostData.js");
 
+const adminRanking = require("./adminRanking.js");
+
 const http = require("http");
 
 const url = require("url");
+const { urlencoded } = require("express");
 
 const hostname = hostData.hostname;
 const port = hostData.port;
@@ -28,10 +31,24 @@ const server = http.createServer((req, res) => {
 
 		sendQuestions(res, myUrl);
 		sendMunu(res, myUrl);
+		entryResult(res, myUrl);
 	}
 
 	res.end();
 });
+
+function entryResult(res, myUrl) {
+	let lenPerMin = myUrl.searchParams.get("lenPerMin");
+	if (lenPerMin == null) {
+		return;
+	}
+
+	const qid = myUrl.searchParams.get("resQId");
+	const userId = myUrl.searchParams.get("userId");
+	if (qid != null && userId != null && lenPerMin != null) {
+		adminRanking.rankingEnrty(qid, userId, lenPerMin);
+	}
+}
 
 function sendQuestions(res, myUrl) {
 	let qid = myUrl.searchParams.get("qid");
@@ -39,9 +56,9 @@ function sendQuestions(res, myUrl) {
 		return;
 	}
 
-	const typingData = gtd.getTypingData(qid);
+	const DataTyping = gtd.getDataTyping(qid);
 	sendData = JSON.stringify({
-		questions: typingData,
+		questions: DataTyping,
 	});
 
 	res.write(sendData);

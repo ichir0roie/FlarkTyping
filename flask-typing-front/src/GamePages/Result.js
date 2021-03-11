@@ -1,6 +1,9 @@
 import "../App.css";
 import React, { useEffect, useState } from "react";
 
+const Data = require("../Data");
+const ENDPOINT = Data.dataApi;
+
 function App(props) {
 	useEffect(() => {
 		window.addEventListener("keydown", gameKeyEvent);
@@ -29,6 +32,21 @@ function App(props) {
 	const handleEnd = () => {
 		props.setTitle();
 	};
+	const handleRankingEntry = () => {
+		let url = new URL(ENDPOINT);
+		let params = {
+			resQId: props.questionId,
+			userId: "testUser",
+			lenPerMin: LPM,
+		};
+		url.search = new URLSearchParams(params).toString();
+		fetch(url, {
+			method: "GET",
+			headers: new Headers(),
+			mode: "cors",
+			cache: "default",
+		});
+	};
 
 	const App = (
 		<div>
@@ -39,6 +57,9 @@ function App(props) {
 			<div className="play-admin">
 				<button onClick={handleReset}>reset</button>
 				<button onClick={handleEnd}>end</button>
+			</div>
+			<div>
+				<button onClick={handleRankingEntry}>ランキング登録</button>
 			</div>
 		</div>
 	);
