@@ -1,4 +1,3 @@
 const testImport = require("./rankingAdmin.js");
 
-let val = testImport.getDataRanking("data1");
-console.log(val);
+testImport.rankingEnrty("data2", "test", 110);

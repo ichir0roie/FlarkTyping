@@ -12,6 +12,7 @@
 				"<node_internals>/**"
 			],
 			"program": "${workspaceFolder}\\test.js"
+			// "program": "${workspaceFolder}\\rankingAdmin.js"
 			// "program": "${workspaceFolder}\\main.js"
 		}
 	]

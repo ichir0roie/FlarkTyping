@@ -4,48 +4,136 @@ var path = require("path"); // Path(Node API)：パスの文字列操作
 const csv = require("csv-parse/lib/sync");
 
 const rootPath = process.cwd() + DataRankingPath;
+console.log("test");
 
-exports.getDataRanking = function (qId) {
-	const targetPath = getTargetQuestionPath(rootPath, qId);
+const hostData = require("./hostData.js");
 
-	let DataRanking = [];
-	if (targetPath == null) {
-		return DataRanking;
-	}
+const express = require("express");
+const { shift } = require("methods");
+const mysql = require("mysql");
+const { exit } = require("process");
 
-	try {
-		let tmpDt = fs.readFileSync(targetPath);
+const app = express();
 
-		let res = csv(tmpDt);
+const connection = getConnection();
 
-		for (var i = 0; i < res.length; i++) {
-			DataRanking[i] = res[i];
+function getConnection() {
+	const connection = mysql.createConnection({
+		host: hostData.hostnameDb,
+		user: hostData.user,
+		password: hostData.password,
+		database: hostData.schema,
+	});
+
+	connection.connect((err) => {
+		if (err) {
+			console.log("error connecting: " + err.stack);
+			return;
 		}
-		console.log(DataRanking);
-	} catch (error) {
-		console.log(error);
-	}
-	return DataRanking;
+		console.log("success");
+	});
+	return connection;
+}
+
+function runQuery(query) {
+	console.log(query);
+	let res = connection.query(query, (error, results) => {
+		//setPoolText(results);
+		if (error != null) {
+			console.log(error);
+		}
+	});
+}
+
+// poolText = [];
+// function setPoolText(text) {
+// 	poolText.push(text);
+// }
+// let loopState = true;
+// function delayLog() {
+// 	if (poolText.length > 0) {
+// 		console.log(poolText[0]);
+// 		poolText.shift();
+// 	}
+// }
+// setInterval(delayLog, 1000);
+
+exports.rankingEnrty = function (questionId, userId, lenPerMin) {
+	let query =
+		"select * from " +
+		"ranking" +
+		" where " +
+		" questionId = " +
+		"'" +
+		questionId +
+		"'" +
+		" and " +
+		" userId = " +
+		"'" +
+		userId +
+		"'" +
+		";";
+	console.log(query);
+	connection.query(query, (error, results) => {
+		//setPoolText(results);
+		if (error != null) {
+			console.log(error);
+		}
+		if (results.length > 1) {
+			console.log("Duplication");
+			console.log(results);
+		} else if (results.length == 1) {
+			rankingUpdate(questionId, userId, lenPerMin);
+		} else {
+			rankingInsert(questionId, userId, lenPerMin);
+		}
+	});
 };
 
-function getTargetQuestionPath(targetPath, targetQid) {
-	let targetRankingPath = null;
-	const files = fs.readdirSync(targetPath);
-	for (var i = 0; i < files.length; i++) {
-		targetFile = files[i];
-		const fullpath = path.join(targetPath, targetFile);
-		const stats = fs.statSync(fullpath);
-		console.log(fullpath);
+function rankingUpdate(questionId, userId, lenPerMin) {
+	let query =
+		"update " +
+		"ranking" +
+		" set " +
+		" lenPerMin " +
+		" = " +
+		lenPerMin +
+		" where " +
+		" questionId = " +
+		"'" +
+		questionId +
+		"'" +
+		" and " +
+		" userId = " +
+		"'" +
+		userId +
+		"'" +
+		";";
 
-		if (!stats.isDirectory()) {
-			const qId = targetFile.replace(".csv", "");
-			if (qId == targetQid) {
-				targetRankingPath = fullpath;
-			}
-		}
-		if (targetRankingPath != null) {
-			break;
-		}
-	}
-	return targetRankingPath;
+	runQuery(query);
 }
+function rankingInsert(questionId, userId, lenPerMin) {
+	let query =
+		"insert into " +
+		"ranking" +
+		" values" +
+		"(" +
+		"null" +
+		"," +
+		"'" +
+		questionId +
+		"'" +
+		"," +
+		"'" +
+		userId +
+		"'" +
+		"," +
+		lenPerMin +
+		")";
+
+	runQuery(query);
+}
+
+// rankingEnrty("data1", "test3", 115);
+
+// exit();
