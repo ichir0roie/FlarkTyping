@@ -4,6 +4,7 @@ const gtm = require("./getMenu.js");
 const hostData = require("./hostData.js");
 
 const adminRanking = require("./adminRanking.js");
+const adminUser = require("./adminUser.js");
 
 const http = require("http");
 
@@ -24,47 +25,63 @@ const server = http.createServer((req, res) => {
 		//"Access-Control-Max-Age": 2592000, // 30 days
 		/** add other headers as per requirement */
 	};
-
 	if (req.method === "GET") {
 		res.writeHead(200, headers);
 		const myUrl = new URL(`http://${hostname}:${port}` + req.url);
 
-		sendQuestions(res, myUrl);
-		sendMunu(res, myUrl);
-		entryResult(res, myUrl);
+		checkSendQuestions(res, myUrl);
+		checkSendMunu(res, myUrl);
+		checkEntryResult(res, myUrl);
+		checkGetUserName(res, myUrl);
 	}
-
-	res.end();
 });
 
-function entryResult(res, myUrl) {
-	let lenPerMin = myUrl.searchParams.get("lenPerMin");
-	if (lenPerMin == null) {
+function checkGetUserName(res, myUrl) {
+	let data = myUrl.searchParams.get("email");
+	if (data == null) {
 		return;
 	}
-
-	const qid = myUrl.searchParams.get("resQId");
-	const userId = myUrl.searchParams.get("userId");
-	if (qid != null && userId != null && lenPerMin != null) {
-		adminRanking.rankingEnrty(qid, userId, lenPerMin);
-	}
+	adminUser.getUserName(data).then((userName_) => {
+		const sendData = JSON.stringify({
+			userName: userName_,
+		});
+		res.write(sendData);
+		res.end();
+	});
 }
 
-function sendQuestions(res, myUrl) {
+function checkEntryResult(res, myUrl) {
+	const result = myUrl.searchParams.get("result");
+	if (result == null) {
+		return;
+	}
+	let data = JSON.parse(result);
+
+	const qId = data.qId;
+	const userId = data.userId;
+	let lenPerMin = data.lenPerMin;
+	if (qId != null && userId != null && lenPerMin != null) {
+		adminRanking.rankingEnrty(qId, userId, lenPerMin);
+	}
+	res.end();
+}
+
+function checkSendQuestions(res, myUrl) {
 	let qid = myUrl.searchParams.get("qid");
 	if (qid == null) {
 		return;
 	}
 
 	const DataTyping = gtd.getDataTyping(qid);
-	sendData = JSON.stringify({
+	const sendData = JSON.stringify({
 		questions: DataTyping,
 	});
 
 	res.write(sendData);
+	res.end();
 }
 
-function sendMunu(res, myUrl) {
+function checkSendMunu(res, myUrl) {
 	const menuFilter = myUrl.searchParams.get("menu");
 	if (menuFilter == null) {
 		return;
@@ -72,6 +89,7 @@ function sendMunu(res, myUrl) {
 
 	const meunData = gtm.getMenu("all");
 	res.write(meunData);
+	res.end();
 }
 
 server.listen(port, hostname, () => {

@@ -10,16 +10,17 @@ const hostData = require("./hostData.js");
 const express = require("express");
 const { shift } = require("methods");
 const mysql = require("mysql");
+const util = require("util");
 const { exit } = require("process");
 
 const targetTable = "userinfo";
 
 const app = express();
 
-const connection = getConnection();
+let connection = null;
 
 function getConnection() {
-	const connection = mysql.createConnection({
+	connection = mysql.createConnection({
 		host: hostData.hostnameDb,
 		user: hostData.user,
 		password: hostData.password,
@@ -33,31 +34,19 @@ function getConnection() {
 		}
 		console.log("success");
 	});
-	return connection;
 }
 
 function runQuery(query) {
+	getConnection();
 	console.log(query);
-	let res = connection.query(query, (error, results) => {
+	connection.query(query, (error, results) => {
 		//setPoolText(results);
 		if (error != null) {
 			console.log(error);
 		}
 	});
+	connection.end();
 }
-
-// poolText = [];
-// function setPoolText(text) {
-// 	poolText.push(text);
-// }
-// let loopState = true;
-// function delayLog() {
-// 	if (poolText.length > 0) {
-// 		console.log(poolText[0]);
-// 		poolText.shift();
-// 	}
-// }
-// setInterval(delayLog, 1000);
 
 exports.setInfo = function (email, userName) {
 	let query =
@@ -90,7 +79,7 @@ exports.setInfo = function (email, userName) {
 	});
 };
 
-exports.getInfo = function (email) {
+exports.getUserName = async function (email) {
 	let query =
 		"select * from " +
 		targetTable +
@@ -101,27 +90,24 @@ exports.getInfo = function (email) {
 		"'" +
 		";";
 	console.log(query);
-	connection.query(query, (error, results) => {
-		//setPoolText(results);
-		let res = null;
-		if (error != null) {
-			console.log(error);
-		}
-		if (results.length > 1) {
-			console.log("Duplication");
-			console.log(results);
-		} else if (results.length == 1) {
-			res = results[0]["userName"];
-		} else {
-			res = "can't get info";
-		}
-		sendInfo(res);
-	});
-};
+	getConnection();
+	connection.query = util.promisify(connection.query);
 
-function sendInfo(res) {
-	console.log(res);
-}
+	let res = null;
+	const results = await connection.query(query);
+
+	console.log(results);
+	if (results.length > 1) {
+		console.log("Duplication");
+		console.log(results);
+	} else if (results.length == 1) {
+		res = results[0]["userName"];
+	} else {
+		console.log("can't get userName on server");
+	}
+
+	return res;
+};
 
 function updateUser(email, userName) {
 	let query =

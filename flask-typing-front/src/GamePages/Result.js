@@ -34,10 +34,14 @@ function App(props) {
 	};
 	const handleRankingEntry = () => {
 		let url = new URL(ENDPOINT);
-		let params = {
-			resQId: props.questionId,
+		let sendJson = {
+			qId: props.questionId,
 			userId: "testUser",
 			lenPerMin: LPM,
+		};
+		sendJson = JSON.stringify(sendJson);
+		let params = {
+			result: sendJson,
 		};
 		url.search = new URLSearchParams(params).toString();
 		fetch(url, {

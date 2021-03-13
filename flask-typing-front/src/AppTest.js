@@ -7,6 +7,8 @@ import Play from "./GamePages/Play";
 import Result from "./GamePages/Result";
 import Pre from "./GamePages/Pre";
 
+import UserInfo from "./Seculity/UserInfo";
+
 function App(props) {
 	//init props
 	let questionId = "data1";
@@ -62,7 +64,8 @@ function App(props) {
 	);
 
 	// const App = <div className="App-body">{view}</div>;
-	const App = <div className="App-body">{testView}</div>;
+	// const App = <div className="App-body">{testView}</div>;
+	const App = <Title setPre={setPre} />;
 
 	return App;
 }
