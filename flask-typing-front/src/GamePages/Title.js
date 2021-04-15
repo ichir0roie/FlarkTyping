@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import Pre from "./Pre";
 
-const Data = require("../Data");
+const Data = require("../Data/Data");
 
 const ENDPOINT = Data.dataApi;
 

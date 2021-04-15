@@ -1,7 +1,8 @@
 import "../App.css";
 import React, { useEffect, useState } from "react";
+import userEvent from "@testing-library/user-event";
 
-const Data = require("../Data");
+const Data = require("../Data/Data");
 const ENDPOINT = Data.dataApi;
 
 function App(props) {
@@ -32,11 +33,12 @@ function App(props) {
 	const handleEnd = () => {
 		props.setTitle();
 	};
+
 	const handleRankingEntry = () => {
 		let url = new URL(ENDPOINT);
 		let sendJson = {
 			qId: props.questionId,
-			userId: "testUser",
+			userId: "testUser", //this is hack.testmode
 			lenPerMin: LPM,
 		};
 		sendJson = JSON.stringify(sendJson);
@@ -52,18 +54,29 @@ function App(props) {
 		});
 	};
 
+	const [ranking, setRanking] = useState(0);
+
+	function getRanking() {}
+
+	useEffect(() => {
+		getRanking();
+	}, []);
+
 	const App = (
 		<div>
-			<p>Result</p>
-			<p>問題：{props.questionId}</p>
-			<p>経過時間：{props.elapseTime}</p>
-			<p>文字列/分：{LPM}</p>
+			<div className="result-info">
+				<p>Result</p>
+				<p>問題：{props.questionId}</p>
+				<p>経過時間：{props.elapseTime}</p>
+				<p>文字列/分：{LPM}</p>
+			</div>
+			<div className="ranking-info">
+				<p>順位：{ranking}</p>
+				<button onClick={handleRankingEntry}>ランキング登録</button>
+			</div>
 			<div className="play-admin">
 				<button onClick={handleReset}>reset</button>
 				<button onClick={handleEnd}>end</button>
-			</div>
-			<div>
-				<button onClick={handleRankingEntry}>ランキング登録</button>
 			</div>
 		</div>
 	);

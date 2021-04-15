@@ -16,7 +16,7 @@ const signinUrl =
 //email
 //token
 
-export function setToken(email, password) {
+export function signin(email, password) {
 	// 認証データ
 	const authDate = {
 		email: email,
@@ -34,7 +34,33 @@ export function setToken(email, password) {
 		})
 		.catch((error) => {
 			// Firebase側で用意されているエラーメッセージが格納される
-			console.log(error.response.data.error.message);
+			// console.log(error.response.data.error.message);
+			console.log(error);
+			localStorage.removeItem("token");
+			
+		});
+}
+
+export function signup(email, password) {
+	// 認証データ
+	const authDate = {
+		email: email,
+		password: password,
+		returnSecureToken: true,
+	};
+	axios
+		.post(signupUrl, authDate)
+		.then((response) => {
+			// 返ってきたトークンをローカルストレージに格納する
+			localStorage.setItem("token", response.data.idToken);
+			localStorage.setItem("email", email);
+			setUserName();
+			console.log("success");
+		})
+		.catch((error) => {
+			// Firebase側で用意されているエラーメッセージが格納される
+			// console.log(error.response.data.error.message);
+			console.log(error);
 			localStorage.removeItem("token");
 		});
 }
@@ -44,15 +70,18 @@ function setUserName() {
 	const token = localStorage.getItem("token");
 	//get Info
 	let setValue = "";
+
+	let ret = true;
+
 	if (token !== "") {
 		//get info function
 		setValue = searchUserName();
 	} else {
 		setValue = "gest user";
+		ret = false;
 	}
-	localStorage.setItem(setValue);
-
-	//getName
+	localStorage.setItem("userName", setValue);
+	return ret;
 }
 
 export function getUserName() {

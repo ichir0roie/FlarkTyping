@@ -4,7 +4,7 @@ import reactDom from "react-dom";
 
 import Result from "./Result";
 
-const Data = require("../Data");
+const Data = require("../Data/Data");
 
 function App(props) {
 	useEffect(() => {

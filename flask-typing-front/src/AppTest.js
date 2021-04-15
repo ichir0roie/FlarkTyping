@@ -7,7 +7,9 @@ import Play from "./GamePages/Play";
 import Result from "./GamePages/Result";
 import Pre from "./GamePages/Pre";
 
-import UserInfo from "./Seculity/UserInfo";
+import UserInfo from "./Data/UserInfo";
+
+import Signin from "./Data/Signin";
 
 function App(props) {
 	//init props
@@ -65,7 +67,8 @@ function App(props) {
 
 	// const App = <div className="App-body">{view}</div>;
 	// const App = <div className="App-body">{testView}</div>;
-	const App = <Title setPre={setPre} />;
+	// const App = testView;
+	const App = <Signin />;
 
 	return App;
 }

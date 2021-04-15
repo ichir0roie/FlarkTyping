@@ -1,9 +1,9 @@
-const typingDataPath = "/TypingData/";
+const DataTypingPath = "/DataTyping/";
 const fs = require("fs");
 var path = require("path"); // Path(Node API)：パスの文字列操作
 const csv = require("csv-parse/lib/sync");
 
-const workingDir = process.cwd() + typingDataPath;
+const workingDir = process.cwd() + DataTypingPath;
 
 let searchFilePaths = [];
 let searchDirPaths = [];
